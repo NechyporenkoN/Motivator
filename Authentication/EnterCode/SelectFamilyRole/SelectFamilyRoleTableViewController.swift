@@ -68,11 +68,6 @@ final class SelectFamilyRoleTableViewController: UITableViewController {
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SelectFamilyRoleTableViewCell.self), for: indexPath) as! SelectFamilyRoleTableViewCell
 		cell.configure(role: presenter?.dataSource[indexPath.section].rows[indexPath.row] ?? .father)
-//		if cell.isSelected {
-//			cell.accessoryType = .checkmark
-//		} else {
-//			cell.accessoryType = .none
-//		}
 		return cell
 	}
 	

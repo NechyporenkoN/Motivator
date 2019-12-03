@@ -45,9 +45,9 @@ final class GeneralTabBarController: UITabBarController {
 	
 	fileprivate func configureTabBar() {
 		UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.clear], for: .normal)
-		UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0.33, blue: 0.58, alpha: 1.0)], for: .selected)
+		UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: GeneralColors.globalColor], for: .selected)
    	tabBar.unselectedItemTintColor = UIColor.gray
-		UIView.appearance().tintColor = UIColor(red: 0, green: 0.33, blue: 0.58, alpha: 1.0)
+		UIView.appearance().tintColor = GeneralColors.globalColor
     setTabs()
   }
 

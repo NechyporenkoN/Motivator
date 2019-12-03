@@ -7,31 +7,46 @@
 //
 
 import Foundation
-//import TopTalkCore
+import FirebaseDatabase
+import Firebase
 
 enum SettingsType {
 	case userProfile
-	case addChild
 	case childs
 	case mCoins
 }
 
 final class SettingsPresenter {
-
+	
 	private weak var view: SettingsViewDelegate?
-
-	// private var authCoreSerivce: AuthCoreService?
-
+	
+	var ref: DatabaseReference!
+	var currentUser: User?
+	var dataSource: [[SettingsType]] = [[.userProfile], [.childs, .mCoins]]
 	init(view: SettingsViewDelegate) {
 		self.view = view
-		configureCoreSerivces()
+		
+		configureObserve()
 	}
-	private func configureCoreSerivces() {
-		//	authCoreSerivce = AuthCoreServices()
+	
+	private func configureObserve() {
+		ref = Database.database().reference()
+		ref.observe(DataEventType.value, with: { [weak self] (users) in
+			let usersDict = users.value as? [String : AnyObject] ?? [:]
+			if let userID = Auth.auth().currentUser?.uid {
+				let usersData = usersDict["users"] as? [String : AnyObject] ?? [:]
+				let userById = usersData["\(userID)"] as? [String : AnyObject] ?? [:]
+				let user = User(name: userById["name"] as? String, userId: userById["userID"] as? String, role: userById["role"] as? String ?? "", avatar: userById["avatarURL"] as? String)
+				self?.currentUser = user
+				print(self?.currentUser?.avatar)
+			}
+			self?.view?.tableViewReloadData()
+		})
 	}
+	
 }
 
 // MARK: - SettingsPresenterDelegate
 extension SettingsPresenter: SettingsPresenterDelegate {
-
+	
 }

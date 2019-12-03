@@ -21,11 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		
 		FirebaseApp.configure()
+		Database.database().isPersistenceEnabled = true
 		
 		setRootViewController()
-//		var ref: DatabaseReference?
-//
-//		ref = Database.database().reference()
+
 		return true
 	}
 	
@@ -51,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		//		UITabBar.appearance().isTranslucent = false
 		//		UITabBar.appearance().clipsToBounds = true
 		//		UINavigationBar.appearance().barTintColor = .red
-		//			UINavigationBar.appearance().shadowImage = UIImage()
+					UINavigationBar.appearance().shadowImage = UIImage()
 		//			UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
 				//		UIView.appearance().tintColor = UIColor.red
 		//		window = UIWindow(frame: UIScreen.main.bounds)

@@ -18,9 +18,9 @@ class AddingUserDataTableViewCell: UITableViewCell {
 		let button = UIButton()
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.setTitle("Add Photo", for: [])
-		button.setTitleColor(UIColor(red: 0, green: 0.33, blue: 0.58, alpha: 1.0), for: [])
+		button.setTitleColor(GeneralColors.globalColor, for: [])
 		button.layer.cornerRadius = 10
-		button.layer.borderColor = UIColor(red: 0, green: 0.33, blue: 0.58, alpha: 1.0).cgColor
+		button.layer.borderColor = GeneralColors.globalColor.cgColor
 		button.layer.borderWidth = 1
 		
 		return button
@@ -30,10 +30,10 @@ class AddingUserDataTableViewCell: UITableViewCell {
 		let imageView = UIImageView()
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		imageView.image = UIImage(named: "UserAvatarHolder")
-		imageView.contentMode = .scaleAspectFit
-		imageView.tintColor = UIColor(red: 0, green: 0.33, blue: 0.58, alpha: 1.0)
+		imageView.contentMode = .scaleAspectFill
+		imageView.tintColor = GeneralColors.globalColor
 		imageView.layer.cornerRadius = 10
-		imageView.layer.borderColor = UIColor(red: 0, green: 0.33, blue: 0.58, alpha: 1.0).cgColor
+		imageView.layer.borderColor = GeneralColors.globalColor.cgColor
 		imageView.layer.borderWidth = 1
 		imageView.layer.masksToBounds = true
 		
@@ -52,7 +52,7 @@ class AddingUserDataTableViewCell: UITableViewCell {
 		let view = UIView()
 		view.translatesAutoresizingMaskIntoConstraints = false
 		view.layer.cornerRadius = 10
-		view.layer.borderColor = UIColor(red: 0, green: 0.33, blue: 0.58, alpha: 1.0).cgColor
+		view.layer.borderColor = GeneralColors.globalColor.cgColor
 		view.layer.borderWidth = 1
 		view.backgroundColor = .clear
 		
@@ -68,10 +68,17 @@ class AddingUserDataTableViewCell: UITableViewCell {
 		setConstraints()
 	}
 	
-	func configure(image: UIImage?) {
-		guard let image = image else { avatarImageView.layer.borderWidth = 1; return }
-		avatarImageView.image = image
+	func configure(user: User?) {
+		guard let user = user else { return }
+		nameTextField.text = user.name
+		guard let imageStr = user.avatar  else { avatarImageView.layer.borderWidth = 1; return }
+		avatarImageView.sd_setImage(with: URL(string: imageStr), completed: nil)
 		avatarImageView.layer.borderWidth = 0
+	}
+	
+	func requestUpdatedName() -> String? {
+		
+		return nameTextField.text
 	}
 	
 	private func configureView() {

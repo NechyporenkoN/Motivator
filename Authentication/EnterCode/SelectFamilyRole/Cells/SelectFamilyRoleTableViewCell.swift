@@ -18,7 +18,7 @@ class SelectFamilyRoleTableViewCell: UITableViewCell {
 		return label
 	}()
 	
-	var isSelectedRole = false
+//	var isSelectedRole = false
 	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -47,7 +47,7 @@ class SelectFamilyRoleTableViewCell: UITableViewCell {
 	
 	override func prepareForReuse() {
 		super.prepareForReuse()
-		isSelectedRole = false
+//		isSelectedRole = false
 		accessoryType = .none
 	}
 	

@@ -10,8 +10,11 @@ import Foundation
 
 protocol SettingsPresenterDelegate: class {
 
+	var currentUser: User? { get }
+	var dataSource: [[SettingsType]] { get }
 }
 
 protocol SettingsViewDelegate: class {
 
+	func tableViewReloadData()
 }

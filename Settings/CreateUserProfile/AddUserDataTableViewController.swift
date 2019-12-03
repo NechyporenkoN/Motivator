@@ -7,16 +7,17 @@
 //
 
 import UIKit
-//import ImagePicker
+import JTMaterialSpinner
 
-final class CreateUserProfileTableViewController: UITableViewController {
+final class AddUserDataTableViewController: UITableViewController {
 	
-	private var presenter: CreateUserProfileTablePresenterDelegate?
+	private var presenter: AddUserDataTablePresenterDelegate?
+	var spinnerView = JTMaterialSpinner()
 	var avatarImage: UIImage?
 	
-	init() {
+	init(user: User?) {
 		super.init(style: .grouped)
-		presenter = CreateUserProfileTablePresenter(view: self)
+		presenter = AddUserDataTablePresenter(view: self, user: user)
 	}
 	
 	required init?(coder: NSCoder) {
@@ -34,25 +35,30 @@ final class CreateUserProfileTableViewController: UITableViewController {
 	
 	private func configureView() {
 		
-		navigationItem.title = "Create profile"
+		navigationItem.title = "Edit Profile"
 		
-		let nextButton = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextButtonPressed))
+		let nextButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneButtonPressed))
 		navigationItem.rightBarButtonItem = nextButton
-		navigationItem.hidesBackButton = true
+		//		navigationItem.hidesBackButton = true
 		//		navigationController?.navigationBar.backgroundColor = tableView.backgroundColor
+		tableView.separatorColor = GeneralColors.globalColor
 		tableView.keyboardDismissMode = .interactive
 		tableView.register(AddingUserDataTableViewCell.self, forCellReuseIdentifier: String(describing: AddingUserDataTableViewCell.self))
-		tableView.register(FamilyRoleTableViewCell.self, forCellReuseIdentifier: String(describing: FamilyRoleTableViewCell.self))
+		//		tableView.register(FamilyRoleTableViewCell.self, forCellReuseIdentifier: String(describing: FamilyRoleTableViewCell.self))
 		
 	}
 	
 	private func configureSubviews() {
-		//view.addSubview
-		//constraints
+		spinnerView.circleLayer.lineWidth = 5.0
+		spinnerView.circleLayer.strokeColor = UIColor(red: 0, green: 0.33, blue: 0.58, alpha: 1.0).cgColor
+		spinnerView.animationDuration = 2.5
+		spinnerView.frame = CGRect(x: tableView.center.x - 40, y: tableView.center.y - 100, width: 80, height: 80)
+		
+		view.addSubview(spinnerView)
 	}
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		return 2
+		return 1
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -61,15 +67,15 @@ final class CreateUserProfileTableViewController: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		if indexPath.section == 0 {
-			let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddingUserDataTableViewCell.self), for: indexPath) as! AddingUserDataTableViewCell
-			cell.delegate = self
-			cell.configure(image: avatarImage)
-			return cell
-		}
-		let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: FamilyRoleTableViewCell.self), for: indexPath) as! FamilyRoleTableViewCell
-		cell.configure(role: presenter?.familyRole)
+		//		if indexPath.section == 0 {
+		let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddingUserDataTableViewCell.self), for: indexPath) as! AddingUserDataTableViewCell
+		cell.delegate = self
+		cell.configure(user: presenter?.currentUser)
 		return cell
+		//		}
+		//		let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: FamilyRoleTableViewCell.self), for: indexPath) as! FamilyRoleTableViewCell
+		//		cell.configure(role: presenter?.familyRole)
+		//		return cell
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -93,28 +99,26 @@ final class CreateUserProfileTableViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		if indexPath.section == 1 {
-			let destination = SelectFamilyRoleTableViewController()
-//			destination.delegate = self
-			navigationController?.show(destination, sender: self)
-		}
+		//		if indexPath.section == 1 {
+		//			let destination = SelectFamilyRoleTableViewController()
+		//			destination.delegate = self
+		//			navigationController?.show(destination, sender: self)
+		//		}
 	}
 	
-	@objc func nextButtonPressed() {
-		guard presenter?.familyRole != nil else { return }
-		presenter?.createUsers()
+	@objc func doneButtonPressed() {
+		
+		presenter?.uploadAvatarImage(image: avatarImage)
+		//		presenter?.updateUserDataIfNeeded()
 	}
 }
 
 
 // MARK: - CreateUserProfileTableViewDelegate
-extension CreateUserProfileTableViewController: CreateUserProfileTableViewDelegate {
+extension AddUserDataTableViewController: AddUserDataTableViewDelegate {
 	
-	func setAndShowGeneralController() {
-		let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
-		appDel.setGeneralRootViewController()
-		let destination = GeneralTabBarController()
-		navigationController?.show(destination, sender: self)
+	func popViewController() {
+		navigationController?.popViewController(animated: true)
 	}
 	
 	func reloadTableView() {
@@ -122,9 +126,25 @@ extension CreateUserProfileTableViewController: CreateUserProfileTableViewDelega
 			self.tableView.reloadData()
 		}
 	}
+	
+	func userNameDidRequest() -> String? {
+		
+		guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? AddingUserDataTableViewCell else {
+			return nil
+		}
+		return cell.requestUpdatedName()
+	}
+	
+	func spinnerStartAnimate() {
+		spinnerView.beginRefreshing()
+	}
+	
+	func spinnerStopAnimate() {
+		spinnerView.endRefreshing()
+	}
 }
 
-extension CreateUserProfileTableViewController: SelectFamilyRoleDelegate {
+extension AddUserDataTableViewController: SelectFamilyRoleDelegate {
 	
 	func selectedRole(role: FamilyRoleRow) {
 		presenter?.familyRole = role
@@ -133,14 +153,14 @@ extension CreateUserProfileTableViewController: SelectFamilyRoleDelegate {
 	}
 }
 
-extension CreateUserProfileTableViewController: AddPhotoButtonDelegate{
+extension AddUserDataTableViewController: AddPhotoButtonDelegate{
 	
 	func addPhotoButtonDidTap() {
 		showAlert()
 	}
 }
 
-extension CreateUserProfileTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension AddUserDataTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 	
 	private func showAlert() {
 		
@@ -150,7 +170,7 @@ extension CreateUserProfileTableViewController: UIImagePickerControllerDelegate,
 			self?.showCamera() }))
 		
 		alert.addAction(UIAlertAction(title: "Photo library", style: .default, handler: { [ weak self] (action) in
-						self?.showPhotoLibrary() }))
+			self?.showPhotoLibrary() }))
 		
 		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 		present(alert, animated: true, completion: nil)
@@ -177,16 +197,16 @@ extension CreateUserProfileTableViewController: UIImagePickerControllerDelegate,
 	}
 	
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-	
-			if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-	//			presenter?.avatarRepresentation = MediaRepresentation(image)
-				avatarImage = image
-			}
-	
-			tableView.reloadSections([0], with: .automatic)
-			dismiss(animated: true, completion: nil)
+		
+		if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+			//			presenter?.avatarRepresentation = MediaRepresentation(image)
+			avatarImage = image
 		}
-
+		
+		tableView.reloadSections([0], with: .automatic)
+		dismiss(animated: true, completion: nil)
+	}
+	
 }
 
 //
