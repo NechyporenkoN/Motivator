@@ -133,8 +133,11 @@ final class SettingsViewController: UITableViewController {
 		let createAction = UIAlertAction(title: "Create", style: .default) { (action) in
 			print("Create")
 		}
-		let joinAction = UIAlertAction(title: "Join", style: .default) { (action) in
+		let joinAction = UIAlertAction(title: "Join", style: .default) { [weak self] (action) in
 			print("Join")
+			let destination = JoinFamilyTableViewController(currentUser: self?.presenter?.currentUser)
+			self?.present(destination, animated: true, completion: nil)
+			//self?.navigationController?.show(destination, sender: self)
 		}
 		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 		alert.addAction(createAction)

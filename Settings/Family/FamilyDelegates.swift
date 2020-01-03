@@ -10,11 +10,15 @@ import Foundation
 
 protocol FamilyTablePresenterDelegate: class {
 
+	var dataSource: [FamilySection] { get }
 	var parentsDataSource: [User?] { get }
-	var childsDataSource: [User?] { get }
+	var childrenDataSource: [User?] { get }
+	var currentUser: User? { get }
+	var family: Family? { get }
 }
 
 protocol FamilyTableViewDelegate: class {
 
 	func tableViewReloadData()
+	func setBarButton()
 }

@@ -10,12 +10,19 @@ import Foundation
 import FirebaseDatabase
 import Firebase
 
+enum FamilySection {
+	case avatar
+	case parents
+	case childs
+}
+
 final class FamilyTablePresenter {
 	
 	private weak var view: FamilyTableViewDelegate?
 	
+	var dataSource: [FamilySection] = []
 	var parentsDataSource: [User?] = []
-	var childsDataSource: [User?] = []
+	var childrenDataSource: [User?] = []
 	var currentUser: User?
 	var family: Family?
 	var ref: DatabaseReference!
@@ -30,7 +37,12 @@ final class FamilyTablePresenter {
 	}
 	
 	private func configureDataSource() {
+		dataSource = [.avatar, .parents, .childs]
+		
 		guard let members = family?.members else { return }
+
+		parentsDataSource = []
+		childrenDataSource = []
 		for member in members {
 			ref.child("users").child(member).observeSingleEvent(of: .value, with: { [weak self] (user) in
 				let value = user.value as? NSDictionary
@@ -46,16 +58,14 @@ final class FamilyTablePresenter {
 						self?.parentsDataSource.append(user)
 					
 				} else if rights == "child" {
-					self?.childsDataSource.append(user)
+					self?.childrenDataSource.append(user)
 				}
 //				dump(user)
 				self?.view?.tableViewReloadData()
 			}) { (error) in
 				print(error.localizedDescription)
 			}
-			
 		}
-		
 	}
 	
 	private func configureObserve() {
@@ -65,9 +75,17 @@ final class FamilyTablePresenter {
 			if let familyID =  self?.currentUser?.familyID {
 				let familiesData = familiesDict["families"] as? [String : AnyObject] ?? [:]
 				let familyById = familiesData["\(familyID)"] as? [String : AnyObject] ?? [:]
-				let family = Family(name: familyById["name"] as? String, ownerID: familyById["ownerID"] as? String, familyID: familyById["familyID"] as? String ?? "", members: familyById["members"] as? [String])
+				let family = Family(name: familyById["name"] as? String,
+														ownerID: familyById["ownerID"] as? String,
+														familyID: familyById["familyID"] as? String ?? "",
+														members: familyById["members"] as? [String],
+														avaterURL: familyById["avatarURL"] as? String,
+														logoURL: familyById["logoURL"] as? String)
 				self?.family = family
 //				dump(family)
+				if family.familyID == self?.currentUser?.userID {
+					self?.view?.setBarButton()
+				}
 			}
 			self?.configureDataSource()
 		})
