@@ -9,9 +9,9 @@
 import UIKit
 import JTMaterialSpinner
 
-protocol SelectFamilyRoleDelegate: class {
-    func selectedRole(role: FamilyRoleRow)
-}
+//protocol SelectFamilyRoleDelegate: class {
+//    func selectedRole(role: FamilyRoleRow)
+//}
 
 final class SelectFamilyRoleTableViewController: UITableViewController {
 
@@ -19,9 +19,9 @@ final class SelectFamilyRoleTableViewController: UITableViewController {
 	private var presenter: SelectFamilyRoleTablePresenterDelegate?
 	var nextButton: UIBarButtonItem?
 	
-	init() {
+	init(familyRights: Rights?, authType: AuthType) {
 		super.init(style: .grouped)
-		presenter = SelectFamilyRoleTablePresenter(view: self)
+		presenter = SelectFamilyRoleTablePresenter(view: self, familyRights: familyRights, authType: authType)
 	}
 	
 	override func viewDidLoad() {
@@ -76,7 +76,7 @@ final class SelectFamilyRoleTableViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		return section == 0 ? "Parents" : "Childs"
+		return presenter?.dataSource.count == 2 ? section == 0 ? "Parents" : "Childs" : nil
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -156,5 +156,9 @@ extension SelectFamilyRoleTableViewController: SelectFamilyRoleTableViewDelegate
 	
 	func spinnerStopAnimate() {
 		spinnerView.endRefreshing()
+	}
+	
+	func popToViewController() {
+		navigationController?.popToRootViewController(animated: true)
 	}
 }

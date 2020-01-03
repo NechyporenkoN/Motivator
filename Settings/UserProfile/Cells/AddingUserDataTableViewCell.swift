@@ -32,7 +32,7 @@ class AddingUserDataTableViewCell: UITableViewCell {
 		imageView.image = UIImage(named: "UserAvatarHolder")
 		imageView.contentMode = .scaleAspectFill
 		imageView.tintColor = GeneralColors.globalColor
-		imageView.layer.cornerRadius = 10
+		//		imageView.layer.cornerRadius = imageView.frame.width/2
 		imageView.layer.borderColor = GeneralColors.globalColor.cgColor
 		imageView.layer.borderWidth = 1
 		imageView.layer.masksToBounds = true
@@ -44,6 +44,7 @@ class AddingUserDataTableViewCell: UITableViewCell {
 		let textField = UITextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
 		textField.placeholder = "Enter your name"
+		textField.textAlignment = .center
 		
 		return textField
 	}()
@@ -66,14 +67,22 @@ class AddingUserDataTableViewCell: UITableViewCell {
 		
 		configureView()
 		setConstraints()
+		setupCornerRadius()
 	}
 	
 	func configure(user: User?) {
+		
 		guard let user = user else { return }
 		nameTextField.text = user.name
-		guard let imageStr = user.avatar  else { avatarImageView.layer.borderWidth = 1; return }
-		avatarImageView.sd_setImage(with: URL(string: imageStr), completed: nil)
-		avatarImageView.layer.borderWidth = 0
+		
+		if let avatarUrl = user.avatar {
+			avatarImageView.sd_setImage(with: URL(string: avatarUrl), completed: nil)
+			avatarImageView.layer.borderWidth = 0
+			addPhotoButton.setTitle("Change Photo", for: [])
+		} else {
+			avatarImageView.layer.borderWidth = 1
+			avatarImageView.image = UIImage(named: "UserAvatarHolder")
+		}
 	}
 	
 	func requestUpdatedName() -> String? {
@@ -91,6 +100,16 @@ class AddingUserDataTableViewCell: UITableViewCell {
 		addPhotoButton.addTarget(self, action: #selector(addPhotoButtonPressed), for: .touchUpInside)
 	}
 	
+	private func setupCornerRadius() {
+		avatarImageView.layer.cornerRadius = 50//avatarImageView.frame.height/2
+		addPhotoButton.layer.cornerRadius = 22.5//addPhotoButton.frame.height/2
+		helperViewForTaxtField.layer.cornerRadius = 22.5//helperViewForTaxtField.frame.height/2
+//		self.layer.cornerRadius = 10
+	}
+	
+//	override func layoutSubviews() {
+//	}
+	
 	private func setConstraints() {
 		
 		NSLayoutConstraint.activate([
@@ -100,11 +119,18 @@ class AddingUserDataTableViewCell: UITableViewCell {
 			avatarImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
 		])
 		
+		//		NSLayoutConstraint.activate([
+		//			addPhotoButton.heightAnchor.constraint(equalToConstant: 45),
+		//			addPhotoButton.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
+		//			addPhotoButton.widthAnchor.constraint(equalToConstant: contentView.frame.width/3),
+		//			addPhotoButton.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 10)
+		//		])
+		
 		NSLayoutConstraint.activate([
 			addPhotoButton.heightAnchor.constraint(equalToConstant: 45),
 			addPhotoButton.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
-			addPhotoButton.widthAnchor.constraint(equalToConstant: contentView.frame.width/3),
-			addPhotoButton.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 10)
+			addPhotoButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -32),
+			addPhotoButton.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 26)
 		])
 		
 		NSLayoutConstraint.activate([

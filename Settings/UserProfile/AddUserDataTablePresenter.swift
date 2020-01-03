@@ -19,7 +19,7 @@ final class AddUserDataTablePresenter {
 	var ref: DatabaseReference?
 	var currentUser: User?
 	var familyRole: FamilyRoleRow? //{ didSet { view?.reloadData() }}
-	var avatarURL = ""
+	var avatarURL: String?
 	
 	init(view: AddUserDataTableViewDelegate, user: User?) {
 		self.view = view
@@ -57,10 +57,16 @@ final class AddUserDataTablePresenter {
 		let name = view?.userNameDidRequest()
 		guard let userID = Auth.auth().currentUser?.uid else { return }
 		ref = Database.database().reference().child("users").child(userID)
-		let post = ["name": name as Any,
-								"avatarURL": avatarURL,
+		var post = [AnyHashable : Any]()
+		if avatarURL != nil {
+		post = ["name": name as Any,
+						"avatarURL": avatarURL as Any,
 								] as [AnyHashable : Any]
-		ref?.updateChildValues(post)
+		} else {
+			post = ["name": name as Any
+					] as [AnyHashable : Any]
+		}
+			ref?.updateChildValues(post)
 		view?.spinnerStopAnimate()
 		view?.popViewController()
 	}

@@ -76,7 +76,7 @@ class StartViewController: UIViewController {
 	}
 	
 	@objc func startButtonPressed() {
-		let destination = EnterPhoneNumberViewController()
+		let destination = EnterPhoneNumberViewController(.registration)
 		navigationController?.show(destination, sender: self)
 	}
 }

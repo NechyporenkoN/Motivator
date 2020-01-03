@@ -20,4 +20,5 @@ protocol SelectFamilyRoleTableViewDelegate: class {
 	func setAndShowGeneralController()
 	func spinnerStartAnimate()
 	func spinnerStopAnimate()
+	func popToViewController()
 }

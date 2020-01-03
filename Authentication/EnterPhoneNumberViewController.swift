@@ -8,21 +8,25 @@
 
 import UIKit
 
-final class EnterPhoneNumberViewController: UIViewController {
+enum AuthType {
+	case registration
+	case addPerson
+}
 
+class EnterPhoneNumberViewController: UIViewController {
+	
 	let backgroundImageView: UIImageView = {
-			let view = UIImageView()
-			view.contentMode = .scaleAspectFill
-			view.image = UIImage(named: "BackgroundGradient")
-			view.translatesAutoresizingMaskIntoConstraints = false
-			view.backgroundColor = .white
-			return view
-		}()
+		let view = UIImageView()
+		view.contentMode = .scaleAspectFill
+		view.image = UIImage(named: "BackgroundGradient")
+		view.translatesAutoresizingMaskIntoConstraints = false
+		view.backgroundColor = .white
+		return view
+	}()
 	
 	let enterPhoneLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.text = "Please confirm your country code and enter your phone number"
 		label.textAlignment = .center
 		label.font = UIFont.systemFont(ofSize: 20)
 		label.lineBreakMode = .byWordWrapping
@@ -67,10 +71,14 @@ final class EnterPhoneNumberViewController: UIViewController {
 	}()
 	
 	private var presenter: EnterPhoneNumberPresenterDelegate?
+	private var authType: AuthType?
+	private var familyRights: Rights?
 	
-	init() {
-	super.init(nibName: nil, bundle: nil)
-	presenter = EnterPhoneNumberPresenter(view: self)
+	init(_ authType: AuthType, _ familyRights: Rights? = nil) {
+		super.init(nibName: nil, bundle: nil)
+		self.familyRights = familyRights
+		self.authType = authType
+		presenter = EnterPhoneNumberPresenter(view: self)
 		
 	}
 	
@@ -82,15 +90,22 @@ final class EnterPhoneNumberViewController: UIViewController {
 		super.viewDidLoad()
 		configureView()
 		configureSubviews()
+		configureTitle()
 	}
-
+	
+	private func configureTitle() {
+		if authType == .registration {
+			enterPhoneLabel.text = "Please confirm your country code and enter your phone number"
+		} else if authType == .addPerson {
+			enterPhoneLabel.text = "Please confirm the country code and enter the phone number of the family member you want to add"
+		}
+	}
+	
 	private func configureView() {
-
+		
 		navigationController?.navigationBar.isHidden = false
 		let nextButton = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextButtonPressed))
 		navigationItem.rightBarButtonItem = nextButton
-		
-		
 		
 		view.addSubview(backgroundImageView)
 		view.addSubview(enterPhoneLabel)
@@ -98,7 +113,7 @@ final class EnterPhoneNumberViewController: UIViewController {
 		view.addSubview(codeButton)
 		view.addSubview(enterPhoneTextField)
 	}
-
+	
 	private func configureSubviews() {
 		
 		NSLayoutConstraint.activate([
@@ -137,25 +152,29 @@ final class EnterPhoneNumberViewController: UIViewController {
 			enterPhoneTextField.trailingAnchor.constraint(equalTo: countryButton.trailingAnchor)
 		])
 	}
-
+	
 	@objc func nextButtonPressed() {
 		
 		print("next")
 		guard (enterPhoneTextField.text?.count ?? 0) > 0 else { enterPhoneTextField.shake(); return }
 		let number = (codeButton.titleLabel?.text ?? "") + (enterPhoneTextField.text ?? "")
-		presenter?.sendPhoneNumber(phoneNumber: number) { (status, message, verificationID) in
-			print(status, message, verificationID)
+		presenter?.sendPhoneNumber(phoneNumber: number) { [weak self] (status, message, verificationID) in
+			print(status, message as Any, verificationID as Any)
 			if status {
-				let destination = EnterCodeViewController(phoneNumber: number, verificationID: verificationID)
-				self.navigationController?.show(destination, sender: self)
+				if self?.authType == .registration {
+				let destination = EnterCodeViewController(authType: .registration, phoneNumber: number, verificationID: verificationID)
+				self?.navigationController?.show(destination, sender: self)
+				}
+//				else if self?.authType == .addPerson {
+//					let destination = EnterCodeViewController(self?.familyRights, authType: .addPerson, phoneNumber: number, verificationID: verificationID)
+//					self?.navigationController?.show(destination, sender: self)
+//				}
 			}
 		}
-		
-	}
-	
+	}	
 }
 
 // MARK: - EnterPhoneNumberTableViewDelegate
 extension EnterPhoneNumberViewController: EnterPhoneNumberViewDelegate {
-
+	
 }

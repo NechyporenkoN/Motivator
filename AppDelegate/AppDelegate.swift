@@ -50,17 +50,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		//		UITabBar.appearance().isTranslucent = false
 		//		UITabBar.appearance().clipsToBounds = true
 		//		UINavigationBar.appearance().barTintColor = .red
-					UINavigationBar.appearance().shadowImage = UIImage()
+//					UINavigationBar.appearance().shadowImage = UIImage()
 		//			UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
 				//		UIView.appearance().tintColor = UIColor.red
 		//		window = UIWindow(frame: UIScreen.main.bounds)
 		//		window?.rootViewController = navigationController
 		//		window?.makeKeyAndVisible()
-				
+		window?.backgroundColor = .white
 	}
 	
 	private func isLoggedIn() -> Bool {
-		return true//Auth.auth().currentUser != nil
+		return Auth.auth().currentUser != nil
 	}
 	
 	 func setGeneralRootViewController() {
@@ -69,14 +69,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //		navigationController = UINavigationController(rootViewController: GeneralTabBarController())
 		window?.rootViewController = GeneralTabBarController()
 		window?.makeKeyAndVisible()
+		window?.backgroundColor = .white
 	}
 	
 	func setSelectRoleRootViewController() {
 
 		var navigationController = UINavigationController()
-		navigationController = UINavigationController(rootViewController: SelectFamilyRoleTableViewController())
+		navigationController = UINavigationController(rootViewController: SelectFamilyRoleTableViewController(familyRights: nil, authType: .registration))
 		window?.rootViewController = navigationController
 		window?.makeKeyAndVisible()
+		window?.backgroundColor = .white
 //		navigationController.setNavigationShadowHidden(true)
 	}
 	

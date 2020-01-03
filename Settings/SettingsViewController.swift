@@ -14,7 +14,11 @@ final class SettingsViewController: UITableViewController {
 	
 	
 	init() {
-		super.init(style: .grouped)
+		if #available(iOS 13.0, *) {
+			super.init(style: .insetGrouped)
+		} else {
+			super.init(style: .grouped)
+		}
 		presenter = SettingsPresenter(view: self)
 	}
 	
@@ -29,12 +33,12 @@ final class SettingsViewController: UITableViewController {
 	}
 	
 	private func configureView() {
-		
-		tableView.separatorColor = GeneralColors.globalColor
-		tableView.keyboardDismissMode = .interactive
-		
+//		tableView.backgroundColor = .yellow
+//		tableView.separatorColor = GeneralColors.globalColor
+//		tableView.keyboardDismissMode = .interactive
+//		tableView.tableHeaderView?.backgroundColor = .cyan
 		tableView.register(SettingsUserProfileTableViewCell.self, forCellReuseIdentifier: String(describing: SettingsUserProfileTableViewCell.self))
-		tableView.register(SettingsChildsTableViewCell.self, forCellReuseIdentifier: String(describing: SettingsChildsTableViewCell.self))
+		tableView.register(SettingsFamilyTableViewCell.self, forCellReuseIdentifier: String(describing: SettingsFamilyTableViewCell.self))
 		tableView.register(SettingsCoinsTableViewCell.self, forCellReuseIdentifier: String(describing: SettingsCoinsTableViewCell.self))
 	}
 	
@@ -43,10 +47,10 @@ final class SettingsViewController: UITableViewController {
 		//constraints
 	}
 	
-	private func showAddUserDataController() {
-		let destination = AddUserDataTableViewController(user: presenter?.currentUser)
-		navigationController?.show(destination, sender: self)
-	}
+//	private func showAddUserDataController() {
+//		let destination = AddUserDataTableViewController(user: presenter?.currentUser)
+//		navigationController?.show(destination, sender: self)
+//	}
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		return presenter?.dataSource.count ?? 3
@@ -64,8 +68,8 @@ final class SettingsViewController: UITableViewController {
 			let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SettingsUserProfileTableViewCell.self), for: indexPath) as! SettingsUserProfileTableViewCell
 			cell.configure(user: presenter.currentUser)
 			return cell
-		case .childs:
-			let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SettingsChildsTableViewCell.self), for: indexPath) as! SettingsChildsTableViewCell
+		case .family:
+			let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SettingsFamilyTableViewCell.self), for: indexPath) as! SettingsFamilyTableViewCell
 //			cell.configure(user: presenter.currentUser)
 			return cell
 		case .mCoins:
@@ -83,8 +87,18 @@ final class SettingsViewController: UITableViewController {
 		return nil
 	}
 	
+	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+		if section == 0 {
+			return "Profile"
+		}
+		if section == 1 {
+			return "Family"
+		}
+		return nil
+	}
+	
 	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return section == 2 ? 0 : 16
+		return 30//section == 2 ? 0 : 16
 	}
 	
 	override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -96,9 +110,36 @@ final class SettingsViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		if indexPath.section == 0 {
-			showAddUserDataController()
+		guard let presenter = presenter else { return }
+		let section = presenter.dataSource[indexPath.section][indexPath.row]
+		switch section {
+		case .userProfile:
+			let destination = AddUserDataTableViewController(user: presenter.currentUser)
+			navigationController?.show(destination, sender: self)
+		case .family:
+			if presenter.currentUser?.familyID != nil {
+			let destination = FamilyTableViewController(currentUser: presenter.currentUser)
+			navigationController?.show(destination, sender: self)
+			} else {
+				showActionSheet()
+			}
+		case .mCoins:
+			print("coins")
 		}
+	}
+	
+	private func showActionSheet() {
+		let alert = UIAlertController(title: "Do you want to create a new family or join an existing one?", message: nil, preferredStyle: .actionSheet)
+		let createAction = UIAlertAction(title: "Create", style: .default) { (action) in
+			print("Create")
+		}
+		let joinAction = UIAlertAction(title: "Join", style: .default) { (action) in
+			print("Join")
+		}
+		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+		alert.addAction(createAction)
+		alert.addAction(joinAction)
+		present(alert, animated: true, completion: nil)
 	}
 }
 

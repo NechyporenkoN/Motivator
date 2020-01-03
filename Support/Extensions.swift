@@ -31,7 +31,7 @@ extension UIView {
 
 extension UIColor {
 	
-	func generalStyleColor() -> UIColor{
+	func generalStyleColor() -> UIColor {
 	 return UIColor(red: 0, green: 0.33, blue: 0.58, alpha: 1.0)
 	}
 }

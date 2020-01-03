@@ -43,15 +43,14 @@ final class EnterCodeViewController: UIViewController {
 	var nextButton: UIBarButtonItem?
 	
 	private var presenter: EnterCodePresenterDelegate?
-	
 	private var codeCounter = 6
-	
 	private var codeFields = [CodeTextField]()
+	private var authType: AuthType?
 	
-	
-	init(phoneNumber: String?, verificationID: String?) {
+	init(_ familyRights: Rights? = nil, authType: AuthType?, phoneNumber: String?, verificationID: String?) {
 		super.init(nibName: nil, bundle: nil)
-		presenter = EnterCodePresenter(view: self, phoneNumber: phoneNumber, verificationID: verificationID)
+		self.authType = authType
+		presenter = EnterCodePresenter(view: self, phoneNumber: phoneNumber, verificationID: verificationID, authType: authType, familyRights: familyRights)
 		
 	}
 	
@@ -124,9 +123,12 @@ final class EnterCodeViewController: UIViewController {
 	}
 	
 	@objc func nextButtonPressed() {
-
-		let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
-		appDel.setSelectRoleRootViewController()
+		
+		if authType == .registration {
+			
+		} else {
+			navigationItem.hidesBackButton = true
+		}
 		presenter?.checkPhoneCode()
 	}
 	
@@ -138,6 +140,13 @@ final class EnterCodeViewController: UIViewController {
 // MARK: - EnterCodeViewDelegate
 extension EnterCodeViewController: EnterCodeViewDelegate {
 	
+	func setAndShowGeneralController() {
+		let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+		appDel.setGeneralRootViewController()
+		let destination = GeneralTabBarController()
+		navigationController?.show(destination, sender: self)
+	}
+	
 	func showAlert(message: String?) {
 		let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
 		let ok = UIAlertAction(title: "Ok", style: .default, handler: nil)
@@ -145,17 +154,29 @@ extension EnterCodeViewController: EnterCodeViewDelegate {
 		present(alert, animated: true)
 	}
 	
-	func showSelectFamilyRoleController() {
-		let destination = SelectFamilyRoleTableViewController()
-				navigationItem.title = nil
+	func showSelectFamilyRoleController(familyRights: Rights?, authType: AuthType?) {
+		let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+		appDel.setSelectRoleRootViewController()
+		let destination = SelectFamilyRoleTableViewController(familyRights: familyRights, authType: authType ?? .registration)
+		navigationItem.title = nil
 		navigationController?.show(destination, sender: self)//(destination, sender: self)
 	}
 	
-//	func showGeneralController() {
-//		let destination = GeneralTabBarController()
-//		navigationItem.title = nil
-//		self.navigationController?.show(destination, sender: self)
-//	}
+	func showSelectFamilyRoleForAddPerson(familyRights: Rights?, authType: AuthType?) {
+		let destination = SelectFamilyRoleTableViewController(familyRights: familyRights, authType: authType ?? .addPerson)
+		navigationItem.title = nil
+		navigationController?.show(destination, sender: self)
+	}
+	
+	//	func popToViewController() {
+	//		navigationController?.popToRootViewController(animated: true)
+	//	}
+	
+	//	func showGeneralController() {
+	//		let destination = GeneralTabBarController()
+	//		navigationItem.title = nil
+	//		self.navigationController?.show(destination, sender: self)
+	//	}
 }
 
 extension EnterCodeViewController: UITextFieldDelegate {

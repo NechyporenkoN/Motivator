@@ -17,7 +17,7 @@ class SettingsUserProfileTableViewCell: UITableViewCell {
 		imageView.image = UIImage(named: "UserAvatarHolder")
 		imageView.contentMode = .scaleAspectFill
 		imageView.tintColor = GeneralColors.globalColor
-		imageView.layer.cornerRadius = 10
+		imageView.layer.cornerRadius = 50
 		imageView.layer.borderColor = GeneralColors.globalColor.cgColor
 		imageView.layer.borderWidth = 1
 		imageView.layer.masksToBounds = true
@@ -39,11 +39,13 @@ class SettingsUserProfileTableViewCell: UITableViewCell {
 		return label
 	}()
 	
+	private let separator = SeparatorView()
+	
 	private let infoStackView: UIStackView = {
 		let stack = UIStackView()
 		stack.translatesAutoresizingMaskIntoConstraints = false
 		stack.axis = .vertical
-		stack.distribution = .fillEqually
+		stack.distribution = .fillProportionally
 		
 		return stack
 	}()
@@ -65,14 +67,15 @@ class SettingsUserProfileTableViewCell: UITableViewCell {
 	}
 	
 	private func configureView() {
+		
+		separator.translatesAutoresizingMaskIntoConstraints = false
 		selectionStyle = .none
 		infoStackView.addArrangedSubview(roleTitleLabel)
+		infoStackView.addArrangedSubview(separator)
 		infoStackView.addArrangedSubview(nameTitleLabel)
 		contentView.addSubview(infoStackView)
 		contentView.addSubview(avatarImageView)
 		accessoryType = .disclosureIndicator
-//		accessoryView?.tintColor = GeneralColors.globalColor
-		
 	}
 	
 	private func setConstraints() {
@@ -89,7 +92,12 @@ class SettingsUserProfileTableViewCell: UITableViewCell {
 			infoStackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 			infoStackView.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
 			infoStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
-			
+		])
+		
+		NSLayoutConstraint.activate([
+			separator.heightAnchor.constraint(equalToConstant: 0.5),
+			separator.widthAnchor.constraint(equalToConstant: infoStackView.frame.width),
+		
 		])
 	}
 	

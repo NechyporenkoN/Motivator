@@ -19,5 +19,8 @@ protocol EnterCodeViewDelegate: class {
 
 	func showAlert(message: String?)
 //	func showGeneralController()
-	func showSelectFamilyRoleController()
+	func showSelectFamilyRoleController(familyRights: Rights?, authType: AuthType?)
+	func showSelectFamilyRoleForAddPerson(familyRights: Rights?, authType: AuthType?)
+//	func popToViewController()
+	func setAndShowGeneralController()
 }

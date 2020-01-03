@@ -8,6 +8,11 @@
 
 import Foundation
 
+enum Rights: String {
+	case parent = "parent"
+	case child = "child"
+}
+
 enum FamilyRole: String {
 	case dad = "dad"
 	case mom = "mom"
@@ -17,16 +22,19 @@ enum FamilyRole: String {
 
 final class User {
 	var name: String?
-	var userId: String?
+	var userID: String?
 	var role: String?
 	var avatar: String?
+	var familyID: String?
+	var rights: String?
 	
-	init(name: String?, userId: String?, role: String, avatar: String?) {
+	convenience init(name: String?, userID: String?, role: String, avatar: String?, familyID: String?, rights: String?) {
+		self.init()
 		self.name = name
-		self.userId = userId
+		self.userID = userID
 		self.role = role
 		self.avatar = avatar
-		
-		
+		self.familyID = familyID
+		self.rights = rights
 	}
 }

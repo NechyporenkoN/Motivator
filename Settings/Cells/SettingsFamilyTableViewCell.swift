@@ -1,5 +1,5 @@
 //
-//  SettingsAddChildTableViewCell.swift
+//  SettingsFamilyTableViewCell.swift
 //  Motivator
 //
 //  Created by Nikita Nechyporenko on 12/3/19.
@@ -8,13 +8,13 @@
 
 import UIKit
 
-class SettingsChildsTableViewCell: UITableViewCell {
+class SettingsFamilyTableViewCell: UITableViewCell {
 
 	private let childTitleLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.textColor = .black
-		label.text = "Childs"
+//		label.text = "Family"
 		
 		return label
 	}()
@@ -27,7 +27,8 @@ class SettingsChildsTableViewCell: UITableViewCell {
 	}
 	
 	private func configureView() {
-		
+			imageView?.image = UIImage(named: "Family")
+			textLabel?.text = "Family"
 			selectionStyle = .none
 			accessoryType = .disclosureIndicator
 			contentView.addSubview(childTitleLabel)

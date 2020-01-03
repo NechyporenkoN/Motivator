@@ -14,7 +14,7 @@ class SettingsCoinsTableViewCell: UITableViewCell {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.textColor = .black
-		label.text = "Coins"
+//		label.text = "Coins"
 		
 		return label
 	}()
@@ -27,7 +27,8 @@ class SettingsCoinsTableViewCell: UITableViewCell {
 	}
 	
 	private func configureView() {
-		
+		imageView?.image = UIImage(named: "Coin")
+		textLabel?.text = "Coins"
 		selectionStyle = .none
 		accessoryType = .disclosureIndicator
 		contentView.addSubview(coinsTitleLabel)

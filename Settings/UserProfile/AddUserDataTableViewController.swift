@@ -18,6 +18,7 @@ final class AddUserDataTableViewController: UITableViewController {
 	init(user: User?) {
 		super.init(style: .grouped)
 		presenter = AddUserDataTablePresenter(view: self, user: user)
+		hidesBottomBarWhenPushed = true
 	}
 	
 	required init?(coder: NSCoder) {
@@ -144,14 +145,14 @@ extension AddUserDataTableViewController: AddUserDataTableViewDelegate {
 	}
 }
 
-extension AddUserDataTableViewController: SelectFamilyRoleDelegate {
-	
-	func selectedRole(role: FamilyRoleRow) {
-		presenter?.familyRole = role
-		print(" l o l o l o ", role.rawValue)
-		reloadTableView()
-	}
-}
+//extension AddUserDataTableViewController: SelectFamilyRoleDelegate {
+//	
+//	func selectedRole(role: FamilyRoleRow) {
+//		presenter?.familyRole = role
+//		print(" l o l o l o ", role.rawValue)
+//		reloadTableView()
+//	}
+//}
 
 extension AddUserDataTableViewController: AddPhotoButtonDelegate{
 	
