@@ -71,7 +71,7 @@ final class AddUserDataTableViewController: UITableViewController {
 		//		if indexPath.section == 0 {
 		let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddingUserDataTableViewCell.self), for: indexPath) as! AddingUserDataTableViewCell
 		cell.delegate = self
-		cell.configure(user: presenter?.currentUser)
+		cell.configure(newImage: avatarImage, user: presenter?.currentUser)
 		return cell
 		//		}
 		//		let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: FamilyRoleTableViewCell.self), for: indexPath) as! FamilyRoleTableViewCell
@@ -204,8 +204,10 @@ extension AddUserDataTableViewController: UIImagePickerControllerDelegate, UINav
 			avatarImage = image
 		}
 		
-		tableView.reloadSections([0], with: .automatic)
-		dismiss(animated: true, completion: nil)
+		
+		dismiss(animated: true) {
+			self.tableView.reloadSections([0], with: .automatic)
+		}
 	}
 	
 }

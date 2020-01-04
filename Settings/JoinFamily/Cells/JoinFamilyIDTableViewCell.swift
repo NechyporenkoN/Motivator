@@ -10,7 +10,7 @@ import UIKit
 
 class JoinFamilyIDTableViewCell: UITableViewCell {
 
-	private let titleFamilyID: UILabel = {
+	 let titleFamilyID: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.textAlignment = .center
@@ -18,7 +18,7 @@ class JoinFamilyIDTableViewCell: UITableViewCell {
 		return label
 	}()
 
-	private let familyIDTextField: UITextField = {
+	 let familyIDTextField: UITextField = {
 		let textField = UITextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
 		textField.textAlignment = .center

@@ -40,7 +40,8 @@ private	func updateUserDataIfNeeded(familyID: String) {
 		
 	}
 	
-	func joinToFamily(familyID: String) {
+	func joinToFamily(familyID: String?) {
+		guard let familyID = familyID else { return }
 		ref = Database.database().reference()
 		ref?.observe(DataEventType.value, with: { [weak self] (families) in
 			

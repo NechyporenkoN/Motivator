@@ -119,7 +119,7 @@ extension JoinFamilyTableViewController: JoinFamilyTableViewDelegate {
 extension JoinFamilyTableViewController: JoinButtonTableViewCellDelegate {
 
 	func joinButtonDidTap() {
-		presenter?.joinToFamily(familyID: familyIdDidRequest() ?? "")
+		presenter?.joinToFamily(familyID: familyIdDidRequest())
 		
 //		print(familyIdDidRequest())
 //		print("tap")

@@ -70,7 +70,7 @@ class AddingUserDataTableViewCell: UITableViewCell {
 		setupCornerRadius()
 	}
 	
-	func configure(user: User?) {
+	func configure(newImage: UIImage?, user: User?) {
 		
 		guard let user = user else { return }
 		nameTextField.text = user.name
@@ -82,6 +82,10 @@ class AddingUserDataTableViewCell: UITableViewCell {
 		} else {
 			avatarImageView.layer.borderWidth = 1
 			avatarImageView.image = UIImage(named: "UserAvatarHolder")
+		}
+		
+		if let image = newImage {
+			avatarImageView.image = image
 		}
 	}
 	

@@ -11,7 +11,7 @@ import Foundation
 protocol JoinFamilyTablePresenterDelegate: class {
 
 	var currentUser: User? { get }
-	func joinToFamily(familyID: String)
+	func joinToFamily(familyID: String?)
 }
 
 protocol JoinFamilyTableViewDelegate: class {
