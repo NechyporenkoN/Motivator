@@ -19,68 +19,84 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	var navigationController = UINavigationController()
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-		
+		application.statusBarStyle = .lightContent
 		FirebaseApp.configure()
 		Database.database().isPersistenceEnabled = true
 		
 		setRootViewController()
-
+		
 		return true
 	}
 	
 	private func setRootViewController() {
 		if isLoggedIn() {
-					if tabBarController == nil {
-						tabBarController = GeneralTabBarController()
-					}
-		//			navigationController = UINavigationController(rootViewController: tabBarController ?? UIViewController())
-		//			navigationController.navigationBar.isHidden = true
-		//			window?.rootViewController = GeneralTabBarController()
-					window = UIWindow(frame: UIScreen.main.bounds)
-					window?.rootViewController = GeneralTabBarController()
-					window?.makeKeyAndVisible()
-				} else {
-					navigationController = UINavigationController(rootViewController: viewController)
-					navigationController.navigationBar.shadowImage = UIImage()
-					navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
-					window = UIWindow(frame: UIScreen.main.bounds)
-					window?.rootViewController = navigationController
-					window?.makeKeyAndVisible()
-				}
-		//		UITabBar.appearance().isTranslucent = false
-		//		UITabBar.appearance().clipsToBounds = true
-		//		UINavigationBar.appearance().barTintColor = .red
-//					UINavigationBar.appearance().shadowImage = UIImage()
-		//			UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
-				//		UIView.appearance().tintColor = UIColor.red
-		//		window = UIWindow(frame: UIScreen.main.bounds)
-		//		window?.rootViewController = navigationController
-		//		window?.makeKeyAndVisible()
+			if tabBarController == nil {
+				tabBarController = GeneralTabBarController()
+			}
+//			navigationController.navigationBar.layer.borderWidth = 0.0
+//		 navigationController.navigationBar.clipsToBounds = true
+			navigationController.navigationBar.shadowImage = UIImage()
+//			let backgroundView = UIView(frame: navigationController.navigationBar.frame)
+//			backgroundView.roundCorners(corners: [.bottomLeft], size: 35)
+//			backgroundView.backgroundColor = GeneralColors.globalColor
+			navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+			
+			window = UIWindow(frame: UIScreen.main.bounds)
+			window?.rootViewController = GeneralTabBarController()
+			window?.makeKeyAndVisible()
+
+		} else {
+			navigationController = UINavigationController(rootViewController: viewController)
+			navigationController.navigationBar.shadowImage = UIImage()
+			navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+			
+			window = UIWindow(frame: UIScreen.main.bounds)
+			window?.rootViewController = navigationController
+			window?.makeKeyAndVisible()
+		}
+
+		
 		window?.backgroundColor = .white
+		
+		UINavigationBar.appearance().tintColor = .white
+		UINavigationBar.appearance().clipsToBounds = true
+		
+//		UIView.appearance().tintColor = GeneralColors.globalColor
+		UITabBar.appearance().layer.borderWidth = 0.0
+		UITabBar.appearance().clipsToBounds = true
+		
+		if #available(iOS 13.0, *) {
+			let statusBar = UIView(frame: (UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame)!)
+			statusBar.backgroundColor = GeneralColors.globalColor
+			UIApplication.shared.keyWindow?.addSubview(statusBar)
+		} else {
+			// Fallback on earlier versions
+		}
 	}
 	
 	private func isLoggedIn() -> Bool {
 		return Auth.auth().currentUser != nil
 	}
 	
-	 func setGeneralRootViewController() {
-
-//		var navigationController = UINavigationController()
-//		navigationController = UINavigationController(rootViewController: GeneralTabBarController())
+	func setGeneralRootViewController() {
+		
+		//		var navigationController = UINavigationController()
+		//		navigationController = UINavigationController(rootViewController: GeneralTabBarController())
 		window?.rootViewController = GeneralTabBarController()
 		window?.makeKeyAndVisible()
 		window?.backgroundColor = .white
 	}
 	
 	func setSelectRoleRootViewController() {
-
+		
 		var navigationController = UINavigationController()
 		navigationController = UINavigationController(rootViewController: SelectFamilyRoleTableViewController(familyRights: nil, authType: .registration))
 		window?.rootViewController = navigationController
 		window?.makeKeyAndVisible()
 		window?.backgroundColor = .white
-//		navigationController.setNavigationShadowHidden(true)
+		//		navigationController.setNavigationShadowHidden(true)
 	}
+	
 	
 	// MARK: UISceneSession Lifecycle
 	
@@ -97,5 +113,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	//	}
 	
 	
+//	func shapeWave() {
+//			
+//			let view = UIView(frame: CGRect(x: 50, y: 100, width: 200, height: 300))
+//
+//			let path = UIBezierPath()
+//			path.move(to: CGPoint(x: 0.0, y: 200))
+//			path.addCurve(to: CGPoint(x: 200, y:150),
+//										controlPoint1: CGPoint(x: 50, y: 350),
+//										controlPoint2: CGPoint(x:150, y: 0))
+//			path.addLine(to: CGPoint(x: view.frame.size.width, y: view.frame.size.height))
+//			path.addLine(to: CGPoint(x: 0.0, y: view.frame.size.height))
+//			path.close()
+//
+//			let shapeLayer = CAShapeLayer()
+//			shapeLayer.path = path.cgPath
+//
+//			view.backgroundColor = UIColor.black
+//			view.layer.mask = shapeLayer
+//	//		self.view.addSubview(view)
+//		navigationController.navigationBar.addSubview(view)
+//		}
+//	
 }
 

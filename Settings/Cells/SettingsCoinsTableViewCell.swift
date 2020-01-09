@@ -28,7 +28,10 @@ class SettingsCoinsTableViewCell: UITableViewCell {
 	
 	private func configureView() {
 		imageView?.image = UIImage(named: "Coin")
-		textLabel?.text = "Coins"
+		imageView?.tintColor = .white
+		imageView?.backgroundColor = .orange
+		imageView?.layer.cornerRadius = 4
+				textLabel?.text = "Coins"
 		selectionStyle = .none
 		accessoryType = .disclosureIndicator
 		contentView.addSubview(coinsTitleLabel)

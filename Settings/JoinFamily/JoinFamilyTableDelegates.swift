@@ -17,4 +17,5 @@ protocol JoinFamilyTablePresenterDelegate: class {
 protocol JoinFamilyTableViewDelegate: class {
 
 	func showFamilyViewController()
+	func popToViewController() 
 }

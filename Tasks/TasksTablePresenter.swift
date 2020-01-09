@@ -1,5 +1,5 @@
 //
-//  TasksPresenter.swift
+//  TasksTablePresenter.swift
 //  Motivator
 //
 //  Created by Nikita Nechyporenko on 11/26/19.
@@ -9,13 +9,13 @@
 import Foundation
 //import TopTalkCore
 
-final class TasksPresenter {
+final class TasksTablePresenter {
 
-	private weak var view: TasksViewDelegate?
+	private weak var view: TasksTableViewDelegate?
 
 	// private var authCoreSerivce: AuthCoreService?
 
-	init(view: TasksViewDelegate) {
+	init(view: TasksTableViewDelegate) {
 		self.view = view
 		configureCoreSerivces()
 	}
@@ -25,6 +25,6 @@ final class TasksPresenter {
 }
 
 // MARK: - TasksPresenterDelegate
-extension TasksPresenter: TasksPresenterDelegate {
+extension TasksTablePresenter: TasksTablePresenterDelegate {
 
 }

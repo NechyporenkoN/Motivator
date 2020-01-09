@@ -166,7 +166,6 @@ extension AddUserDataTableViewController: UIImagePickerControllerDelegate, UINav
 	private func showAlert() {
 		
 		let alert = UIAlertController(title: nil , message: nil, preferredStyle: .actionSheet)
-		
 		alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { [weak self] (action) in
 			self?.showCamera() }))
 		

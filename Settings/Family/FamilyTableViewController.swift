@@ -7,6 +7,7 @@
 //
 
 import UIKit
+//import YXWaveView
 
 final class FamilyTableViewController: UITableViewController {
 	
@@ -27,11 +28,43 @@ final class FamilyTableViewController: UITableViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+//	func ccc() {
+//		let frame = CGRect(x: 100, y: 100, width: self.view.bounds.size.width, height: 600)
+//		let waterView = YXWaveView(frame: frame, color: UIColor.yellow)
+//			let overView = UIView(frame: CGRect(x: 50, y: 50, width: 250, height: 50))
+//		overView.backgroundColor = .green
+//						waterView.addOverView(overView)
+//
+//				// real wave color
+//				waterView.realWaveColor = UIColor.blue
+//		//
+//		//		// mask wave color
+//				waterView.maskWaveColor = UIColor.black
+//		//
+//		//		// wave speed (default: 0.6)
+////				waterView.waveSpeed = 10.5
+//		//
+//		//		// wave height (default: 5)
+//				waterView.waveHeight = 16
+//		//
+//		//		// wave curvature (default: 1.5)
+////				waterView.waveCurvature = 11.2
+//		//
+//		//		waterView.start()
+////				view.addSubview(waterView)
+////				waterView.backgroundColor = .red
+//		tableView.tableHeaderView = waterView
+//		tableView.tableHeaderView?.frame.size.height = 350
+////				waterView.start()
+//
+//	}
+	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		configureView()
 		configureSubviews()
+//		ccc()
 	}
 	
 	private func configureView() {
@@ -40,7 +73,7 @@ final class FamilyTableViewController: UITableViewController {
 		
 		tableView.register(FamilyMembersTableViewCell.self, forCellReuseIdentifier: String(describing: FamilyMembersTableViewCell.self))
 		tableView.register(FamilyAvatarTableViewCell.self, forCellReuseIdentifier: String(describing: FamilyAvatarTableViewCell.self))
-		
+//		tableView.tableHeaderView?.frame.size.height = 250
 //		let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonPressed))//UIBarButtonItem(image: UIImage(named: "Plus"), style: .plain, target: self, action: #selector(addButtonPressed))
 //		if presenter?.family?.familyID == presenter?.currentUser?.userID {
 //			navigationItem.rightBarButtonItem = editButtonItem

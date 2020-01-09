@@ -103,7 +103,7 @@ extension JoinFamilyTableViewController: JoinFamilyTableViewDelegate {
 //	}
 	
 	func showFamilyViewController() {
-		self.dismiss(animated: true) {
+//		self.dismiss(animated: true) {
 //			if self.presenter?.currentUser?.familyID != nil {
 //				let destination = FamilyTableViewController(currentUser: self.presenter?.currentUser)
 //				self.navigationController?.show(destination, sender: self)
@@ -113,7 +113,11 @@ extension JoinFamilyTableViewController: JoinFamilyTableViewDelegate {
 //		let destination = FamilyTableViewController(currentUser: presenter?.currentUser)
 //		navigationController?.show(destination, sender: self)
 //	}
-}
+//}
+	
+	func popToViewController() {
+		navigationController?.popViewController(animated: true)
+	}
 }
 
 extension JoinFamilyTableViewController: JoinButtonTableViewCellDelegate {

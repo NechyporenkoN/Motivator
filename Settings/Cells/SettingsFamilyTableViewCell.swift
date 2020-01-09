@@ -9,7 +9,7 @@
 import UIKit
 
 class SettingsFamilyTableViewCell: UITableViewCell {
-
+	
 	private let childTitleLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
@@ -18,7 +18,7 @@ class SettingsFamilyTableViewCell: UITableViewCell {
 		
 		return label
 	}()
- 
+	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		
@@ -27,22 +27,25 @@ class SettingsFamilyTableViewCell: UITableViewCell {
 	}
 	
 	private func configureView() {
-			imageView?.image = UIImage(named: "Family")
-			textLabel?.text = "Family"
-			selectionStyle = .none
-			accessoryType = .disclosureIndicator
-			contentView.addSubview(childTitleLabel)
-		}
+		imageView?.image = UIImage(named: "Family")
+		imageView?.tintColor = .white
+		imageView?.backgroundColor = UIColor(red:0.00, green:0.56, blue:0.00, alpha:1.0)
+		imageView?.layer.cornerRadius = 4
+					textLabel?.text = "Family"
+		selectionStyle = .none
+		accessoryType = .disclosureIndicator
+		contentView.addSubview(childTitleLabel)
+	}
+	
+	private func setConstraints() {
 		
-		private func setConstraints() {
-			
-			NSLayoutConstraint.activate([
-				childTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-				childTitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-				childTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-				childTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
-			])
-		}
+		NSLayoutConstraint.activate([
+			childTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+			childTitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+			childTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+			childTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+		])
+	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")

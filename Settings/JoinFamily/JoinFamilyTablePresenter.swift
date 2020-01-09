@@ -33,7 +33,8 @@ private	func updateUserDataIfNeeded(familyID: String) {
 //		ref?.updateChildValues(post)
 		ref?.updateChildValues(post, withCompletionBlock: { [weak self] (error, reference) in
 			if error == nil {
-				self?.view?.showFamilyViewController()
+//				self?.view?.showFamilyViewController()
+				self?.view?.popToViewController() 
 			}
 		})
 		//		view?.spinnerStopAnimate()

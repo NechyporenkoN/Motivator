@@ -1,5 +1,5 @@
 //
-//  TasksDelegates.swift
+//  TasksTableDelegates.swift
 //  Motivator
 //
 //  Created by Nikita Nechyporenko on 11/26/19.
@@ -8,10 +8,10 @@
 
 import Foundation
 
-protocol TasksPresenterDelegate: class {
+protocol TasksTablePresenterDelegate: class {
 
 }
 
-protocol TasksViewDelegate: class {
+protocol TasksTableViewDelegate: class {
 
 }
