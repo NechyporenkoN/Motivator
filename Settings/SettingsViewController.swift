@@ -30,6 +30,7 @@ final class SettingsViewController: UITableViewController {
 		super.viewDidLoad()
 		configureView()
 		configureSubviews()
+		
 	}
 	
 	private func configureView() {

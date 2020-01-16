@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import YXWaveView
+//import YXWaveView
 
 //enum Tabs: Int {
 //	case tasks = 0
@@ -47,106 +47,97 @@ final class GeneralTabBarController: UITabBarController, UITabBarControllerDeleg
 		return bounceAnimation
 	}()
 	
-	var backgroundView = UIView(frame: .zero)
+	//	var tasksNavigationController: UINavigationController?       //= UINavigationController(rootViewController: tasksController)
+	//	var progressNavigationController: UINavigationController?    //(rootViewController: progressController)
+	//	var prizesNavigationController: UINavigationController?      //(rootViewController: prizesController)
+	//	var settingsNavigationController: UINavigationController?    //(rootViewController: settingsController)
+	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		configureTabBar()
 		
+		configureTabBar()
 	}
-	
-	
 	
 	override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
 		
-		guard let idx = tabBar.items?.index(of: item), tabBar.subviews.count > idx + 1, let imageView = tabBar.subviews[idx + 1].subviews.compactMap({ $0 as? UIImageView }).first else { return }
+		guard let idx = tabBar.items?.firstIndex(of: item), tabBar.subviews.count > idx + 1, let imageView = tabBar.subviews[idx + 1].subviews.compactMap({ $0 as? UIImageView }).first else { return }
 		
 		imageView.layer.add(bounceAnimation, forKey: nil)
 	}
 	
-	
 	fileprivate func configureTabBar() {
-		UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.clear], for: .normal)
-		UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white/*GeneralColors.globalColor*/], for: .selected)
-		tabBar.unselectedItemTintColor = .white//UIColor.gray
+		
 		self.delegate = self
-		tabBar.tintColor = .white
 		
-		//		if tabBar.selectedItem == tabBar.items?.first {
-		//			backgroundView.roundCorners(corners: [.topRight], size: 35)
-		//			backgroundView.backgroundColor = GeneralColors.globalColor
-		//			tabBar.backgroundImage = backgroundView.asImage()
-		//
-		//		} else if tabBar.selectedItem == tabBar.items?.last {
-		//			backgroundView.roundCorners(corners: [.topLeft], size: 35)
-		//			backgroundView.backgroundColor = GeneralColors.globalColor
-		//			tabBar.backgroundImage = backgroundView.asImage()
-		//		}
-		backgroundView = UIView(frame: tabBar.frame)
+		UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.clear], for: .normal)
+		UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: GeneralColors.globalColor], for: .selected)
 		
-		backgroundView.roundCorners(corners: [.topRight], size: 35)
-		backgroundView.backgroundColor = GeneralColors.globalColor
+		tabBar.unselectedItemTintColor = UIColor(red:0.39, green:0.64, blue:0.82, alpha:1.0)//.white
+		tabBar.tintColor = GeneralColors.globalColor
 		
-		tabBar.backgroundImage = backgroundView.asImage()//UIView(frame: tabBar.frame).asImage()
-		//		tabBar.shadowImage = backgroundView.asImage()
+		tabBar.roundCorners(corners: [.topRight], size: 35)
+		//		tabBar.backgroundColor = GeneralColors.globalColor
 		//		tabBar.shadowImage = UIImage()
-		
-		//		UIView.appearance().tintColor = .white//GeneralColors.globalColor
+		//		tabBar.backgroundImage = UIImage()
+		//		tabBar.isOpaque = true
+		//		tabBar.barTintColor = tasksNavigationController?.navigationBar.backgroundColor//.clear//GeneralColors.globalColor
+		//		tabBar.shadowImage = backgroundView.asImage()
+		//				tabBar.shadowImage = UIImage()
+		tabBar.barTintColor = GeneralColors.navigationBlueColor
+		UIView.appearance().tintColor = GeneralColors.globalColor
 		setTabs()
 	}
 	
 	func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
 		
-		
 		let selectedIndex = tabBarController.viewControllers?.firstIndex(of: viewController)!
 		
-		backgroundView = UIView(frame: tabBar.frame)
-		backgroundView.backgroundColor = GeneralColors.globalColor
+		//		backgroundView = UIView(frame: tabBar.frame)
+		//		backgroundView.backgroundColor = GeneralColors.globalColor//UIColor.gradientWithDirection(frame: tabBar.frame, colors: GeneralColors.globalColorsArr, direction: .fromBottomToTop)//GeneralColors.globalColor
 		
 		if selectedIndex == 0 {
 			DispatchQueue.main.async {
-				let transition = CATransition()
-				transition.type = .fade
-				transition.subtype = .fromTop
-				transition.duration = 0.1
-				self.backgroundView.roundCorners(corners: [.topRight], size: 35)
-				self.tabBar.backgroundImage = self.backgroundView.asImage()
-				self.tabBar.layer.add(transition, forKey: nil)
+				//				let transition = CATransition()
+				//				transition.type = .fade
+				//				transition.subtype = .fromTop
+				//				transition.duration = 0.1
+				self.tabBar.roundCorners(corners: [.topRight], size: 35)
+				//				self.tabBar.layer.add(transition, forKey: nil)
 			}
 		} else if selectedIndex == 1 {
-			DispatchQueue.main.async {
-				let transition = CATransition()
-				transition.type = .fade
-				transition.subtype = .fromTop
-				transition.duration = 0.1
-				self.backgroundView.roundCorners(corners: [.topRight, .topLeft], size: 35)
-				self.tabBar.backgroundImage = self.backgroundView.asImage()
-				self.tabBar.layer.add(transition, forKey: nil)
-			}
+			//			DispatchQueue.main.async {
+			//				let transition = CATransition()
+			//				transition.type = .fade
+			//				transition.subtype = .fromTop
+			//				transition.duration = 0.1
+			self.tabBar.roundCorners(corners: [.topRight, .topLeft], size: 35)
+			//				self.tabBar.layer.add(transition, forKey: nil)
+			//			}
 		} else if selectedIndex == 2 {
 			DispatchQueue.main.async {
-				let transition = CATransition()
-				transition.type = .fade
-				transition.subtype = .fromTop
-				transition.duration = 0.1
-				self.backgroundView.roundCorners(corners: [.topRight, .topLeft], size: 35)
-				self.tabBar.backgroundImage = self.backgroundView.asImage()
-				self.tabBar.layer.add(transition, forKey: nil)
+				//				let transition = CATransition()
+				//				transition.type = .fade
+				//				transition.subtype = .fromBottom
+				//				transition.duration = 0.1
+				self.tabBar.roundCorners(corners: [.topRight, .topLeft], size: 35)
+				//				self.tabBar.layer.add(transition, forKey: nil)
 			}
 		} else if selectedIndex == 3 {
 			DispatchQueue.main.async {
-				let transition = CATransition()
-				transition.type = .fade
-				transition.subtype = .fromTop
-				transition.duration = 0.1
-				self.backgroundView.roundCorners(corners: [.topLeft], size: 35)
-				self.tabBar.backgroundImage = self.backgroundView.asImage()
-				self.tabBar.layer.add(transition, forKey: nil)
+				//				let transition = CATransition()
+				//				transition.type = .fade
+				//				transition.subtype = .fromTop
+				//				transition.duration = 0.1
+				self.tabBar.roundCorners(corners: [.topLeft], size: 35)
+				//				self.tabBar.layer.add(transition, forKey: nil)
 			}
 		}
 	}
 	
+	
 	fileprivate func setTabs() {
+		
 		let tasksController = TasksTableViewController()
 		let progressController = ProgressViewController()
 		let prizesController = PrizesViewController()
@@ -162,55 +153,24 @@ final class GeneralTabBarController: UITabBarController, UITabBarControllerDeleg
 		let prizesNavigationController = UINavigationController(rootViewController: prizesController)
 		let settingsNavigationController = UINavigationController(rootViewController: settingsController)
 		
-		let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-		let frame = CGRect(x: 0, y: 0, width: tasksNavigationController.navigationBar.frame.width, height: tasksNavigationController.navigationBar.frame.height + 20)
-		let backgroundView = UIView(frame: frame)
-		backgroundView.roundCorners(corners: [.bottomLeft], size: 35)
-		backgroundView.backgroundColor = GeneralColors.globalColor
+		let textAttributes = [NSAttributedString.Key.foregroundColor: GeneralColors.globalColor]
 		
-		tasksNavigationController.navigationBar.setBackgroundImage(backgroundView.asImage(), for: .default)
+		
+		tasksNavigationController.navigationBar.navigationRoundCorners(corners: [.bottomLeft], size: 30)
+		tasksNavigationController.navigationBar.barTintColor = GeneralColors.navigationBlueColor
 		tasksNavigationController.navigationBar.titleTextAttributes = textAttributes
-		tasksNavigationController.navigationBar.tintColor = .white
 		
-		backgroundView.roundCorners(corners: [.bottomRight, .bottomLeft], size: 35)
-		progressNavigationController.navigationBar.setBackgroundImage(backgroundView.asImage(), for: .default)
+		progressNavigationController.navigationBar.navigationRoundCorners(corners: [.bottomRight, .bottomLeft], size: 30)
+		progressNavigationController.navigationBar.barTintColor = GeneralColors.navigationBlueColor
 		progressNavigationController.navigationBar.titleTextAttributes = textAttributes
-		progressNavigationController.navigationBar.tintColor = .white
 		
-		prizesNavigationController.navigationBar.setBackgroundImage(backgroundView.asImage(), for: .default)
+		prizesNavigationController.navigationBar.navigationRoundCorners(corners: [.bottomRight, .bottomLeft], size: 30)
+		prizesNavigationController.navigationBar.barTintColor = GeneralColors.navigationBlueColor
 		prizesNavigationController.navigationBar.titleTextAttributes = textAttributes
-		prizesNavigationController.navigationBar.tintColor = .white
 		
-		backgroundView.roundCorners(corners: [.bottomRight], size: 35)
-		settingsNavigationController.navigationBar.setBackgroundImage(backgroundView.asImage(), for: .default)
+		settingsNavigationController.navigationBar.navigationRoundCorners(corners: [.bottomRight], size: 30)
+		settingsNavigationController.navigationBar.barTintColor = GeneralColors.navigationBlueColor
 		settingsNavigationController.navigationBar.titleTextAttributes = textAttributes
-		settingsNavigationController.navigationBar.tintColor = .white
-		//		let frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: 64)
-		//		let waterView = YXWaveView(frame: frame, color: .red)
-		//
-		////		settingsNavigationController.navigationBar.shadowImage = UIImage()
-		////		settingsNavigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
-		//
-		////		settingsNavigationController.navigationBar.addSubview(waterView)
-		//
-		////		waterView.addOverView(overView)
-		//		// real wave color
-		//		waterView.realWaveColor = UIColor.blue
-		//
-		//		// mask wave color
-		//		waterView.maskWaveColor = UIColor.black
-		//
-		//		// wave speed (default: 0.6)
-		//		waterView.waveSpeed = 0.5
-		//
-		//		// wave height (default: 5)
-		//		waterView.waveHeight = 6
-		//
-		//		// wave curvature (default: 1.5)
-		//		waterView.waveCurvature = 1.2
-		//
-		//				waterView.start()
-		
 		
 		let tasksImage = UIImage(named: "TabBarTask")
 		let progressImage = UIImage(named: "TabBarProgress")
@@ -227,49 +187,40 @@ final class GeneralTabBarController: UITabBarController, UITabBarControllerDeleg
 		prizesController.tabBarItem = prizesTabItem
 		settingsController.tabBarItem = settingsTabItem
 		
-		let tabBarControllers = [tasksNavigationController as UIViewController, progressNavigationController, prizesNavigationController, settingsNavigationController]
+		let tabBarControllers = [tasksNavigationController, progressNavigationController, prizesNavigationController, settingsNavigationController]
 		
-		viewControllers = tabBarControllers
+		viewControllers = tabBarControllers as? [UIViewController]
 	}
-	
-	
-	
-	
-	
-	//		func shapeWave() {
-	//
-	//				let view = UIView(frame: CGRect(x: 50, y: 100, width: 200, height: 300))
-	//
-	//				let path = UIBezierPath()
-	//				path.move(to: CGPoint(x: 0.0, y: 200))
-	//				path.addCurve(to: CGPoint(x: 200, y:150),
-	//											controlPoint1: CGPoint(x: 50, y: 350),
-	//											controlPoint2: CGPoint(x:150, y: 0))
-	//				path.addLine(to: CGPoint(x: view.frame.size.width, y: view.frame.size.height))
-	//				path.addLine(to: CGPoint(x: 0.0, y: view.frame.size.height))
-	//				path.close()
-	//
-	//				let shapeLayer = CAShapeLayer()
-	//				shapeLayer.path = path.cgPath
-	//
-	//				view.backgroundColor = UIColor.black
-	//				view.layer.mask = shapeLayer
-	//		//		self.view.addSubview(view)
-	//			settingsNavigationController.navigationBar.addSubview(view)
-	//			}
-	
 }
 
-extension UIView {
-	
-	func roundCorners(corners:UIRectCorner, size:CGFloat){
-		let path = UIBezierPath(roundedRect:self.bounds,
-														byRoundingCorners:corners,
-														cornerRadii: CGSize(width: size, height:  size))
-		
-		let maskLayer = CAShapeLayer()
-		
-		maskLayer.path = path.cgPath
-		self.layer.mask = maskLayer
-	}
-}
+
+//class Shit: UINavigationController {
+//	
+//
+//	override func viewDidLayoutSubviews() {
+//		super.viewDidLayoutSubviews()
+//		
+//		if navigationBar.layer.mask == nil {
+//			navigationBar.roundCorners(corners: [.bottomLeft], size: 35)
+//		}
+//	}
+//}
+//func blurBgImage(image: UIImage) -> UIImage? {
+//		let radius: CGFloat = 20;
+//		let context = CIContext(options: nil);
+//		let inputImage = CIImage(cgImage: image.cgImage!);
+//		let filter = CIFilter(name: "CIGaussianBlur");
+//		filter?.setValue(inputImage, forKey: kCIInputImageKey);
+//		filter?.setValue("\(radius)", forKey:kCIInputRadiusKey);
+//
+//		if let result = filter?.value(forKey: kCIOutputImageKey) as? CIImage{
+//
+//				let rect = CGRect(origin: CGPoint(x: radius * 2,y :radius * 2), size: CGSize(width: image.size.width - radius * 4, height: image.size.height - radius * 4))
+//
+//				if let cgImage = context.createCGImage(result, from: rect){
+//						return UIImage(cgImage: cgImage);
+//						}
+//		}
+//		return nil;
+//}
+

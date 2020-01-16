@@ -8,11 +8,11 @@
 
 import Foundation
 
-enum StatusTask {
-	case active
-	case approve
-	case ready
-	case unfulfilled
+enum StatusTask: String {
+	case active = "active"
+	case awaiting = "awaiting"
+	case ready = "ready"
+	case unfulfilled = "unfulfilled"
 }
 
 final class Task {
@@ -23,10 +23,10 @@ final class Task {
 	var comment: String?
 	var price: String?
 	var deadline: String?
-	var status: StatusTask?
+	var status: String?
 	var imageURL: String?
 	
-	init(taskID: String?, taskName: String?, taskBody: String?, comment: String? = nil, price: String?, deadline: String?, status: StatusTask?, imageURL: String? = nil) {
+	init(taskID: String?, taskName: String?, taskBody: String?, comment: String? = nil, price: String?, deadline: String?, status: String?, imageURL: String? = nil) {
 		self.taskID = taskID
 		self.taskName = taskName
 		self.taskBody = taskBody

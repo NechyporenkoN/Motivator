@@ -59,17 +59,18 @@ extension UIView {
 }
 
 enum DirectionGradient {
-    case rightBottomToLeftTop
-    case leftBottomToRightTop
-    case rightTopToLeftBottom
-    case leftATopToRightBottom
-    case fromBottomToTop
+	case rightBottomToLeftTop
+	case leftBottomToRightTop
+	case rightTopToLeftBottom
+	case leftATopToRightBottom
+	case fromBottomToTop
+	case fromTopToBottom
 }
 
 extension UIColor {
 	
-	func gradientWithDirection(frame: CGRect, colors: [UIColor] = GeneralColors.orangeColors,
-														 direction: DirectionGradient) -> UIColor {
+	static func gradientWithDirection(frame: CGRect, colors: [UIColor] = GeneralColors.orangeColors,
+																		direction: DirectionGradient) -> UIColor {
 		
 		let backgroundGradientLayer = CAGradientLayer()
 		backgroundGradientLayer.frame = frame
@@ -90,6 +91,9 @@ extension UIColor {
 		case .fromBottomToTop:
 			backgroundGradientLayer.startPoint = CGPoint(x: 0.5, y: 1)
 			backgroundGradientLayer.endPoint = CGPoint(x: 0.5, y: 0)
+		case .fromTopToBottom:
+			backgroundGradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
+			backgroundGradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
 		}
 		
 		let cgColors = colors.map({$0.cgColor})
@@ -110,10 +114,9 @@ extension UIColor {
 		return UIColor(patternImage: backgroundColorImage ?? UIImage())
 	}
 	
-	
-	func generalStyleColor() -> UIColor {
-		return UIColor(red: 0, green: 0.33, blue: 0.58, alpha: 1.0)
-	}
+	//	static func generalStyleColor() -> UIColor {
+	//		return UIColor(red: 0, green: 0.33, blue: 0.58, alpha: 1.0)
+	//	}
 }
 
 //extension UINavigationController {
@@ -130,3 +133,31 @@ extension UIColor {
 //		navigationBar.setValue(state, forKey: "hidesShadow")
 //	}
 //}
+
+extension UIView {
+	
+	func navigationRoundCorners(corners: UIRectCorner, size: CGFloat){
+
+		let rect = CGRect(x: bounds.origin.x, y: bounds.origin.y - UIApplication.shared.statusBarFrame.height, width: bounds.width, height: bounds.height + UIApplication.shared.statusBarFrame.height)
+		let path = UIBezierPath(roundedRect: rect,
+														byRoundingCorners:corners,
+														cornerRadii: CGSize(width: size, height:  size))
+		
+		let maskLayer = CAShapeLayer()
+		
+		maskLayer.path = path.cgPath
+		self.layer.mask = maskLayer
+	}
+	
+	func roundCorners(corners: UIRectCorner, size: CGFloat){
+		
+		let path = UIBezierPath(roundedRect: self.bounds,
+														byRoundingCorners:corners,
+														cornerRadii: CGSize(width: size, height:  size))
+		
+		let maskLayer = CAShapeLayer()
+		
+		maskLayer.path = path.cgPath
+		self.layer.mask = maskLayer
+	}
+}

@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	var navigationController = UINavigationController()
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-		application.statusBarStyle = .lightContent
+//		application.statusBarStyle = .lightContent
 		FirebaseApp.configure()
 		Database.database().isPersistenceEnabled = true
 		
@@ -30,16 +30,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	private func setRootViewController() {
 		if isLoggedIn() {
+			
 			if tabBarController == nil {
 				tabBarController = GeneralTabBarController()
 			}
-//			navigationController.navigationBar.layer.borderWidth = 0.0
-//		 navigationController.navigationBar.clipsToBounds = true
-			navigationController.navigationBar.shadowImage = UIImage()
-//			let backgroundView = UIView(frame: navigationController.navigationBar.frame)
-//			backgroundView.roundCorners(corners: [.bottomLeft], size: 35)
-//			backgroundView.backgroundColor = GeneralColors.globalColor
-			navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+
+//			navigationController.navigationBar.shadowImage = UIImage()
+//			navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+			
+//			tabBarController?.tabBar.shadowImage = UIImage()
+//			tabBarController?.tabBar.backgroundImage = UIImage()
 			
 			window = UIWindow(frame: UIScreen.main.bounds)
 			window?.rootViewController = GeneralTabBarController()
@@ -55,20 +55,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			window?.makeKeyAndVisible()
 		}
 
-		
 		window?.backgroundColor = .white
+		UINavigationBar.appearance().tintColor = GeneralColors.globalColor//.white
+		UINavigationBar.appearance().backgroundColor = .white//GeneralColors.globalColor
+
 		
-		UINavigationBar.appearance().tintColor = .white
-		UINavigationBar.appearance().clipsToBounds = true
-		
-//		UIView.appearance().tintColor = GeneralColors.globalColor
-		UITabBar.appearance().layer.borderWidth = 0.0
-		UITabBar.appearance().clipsToBounds = true
+//		UITabBar.appearance().layer.borderWidth = 1.0
+//		UITabBar.appearance().layer.borderColor = UIColor.red.cgColor
+//		UITabBar.appearance().clipsToBounds = true
 		
 		if #available(iOS 13.0, *) {
-			let statusBar = UIView(frame: (UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame)!)
-			statusBar.backgroundColor = GeneralColors.globalColor
-			UIApplication.shared.keyWindow?.addSubview(statusBar)
+//			let statusBar = UIView(frame: (UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame)!)
+//			statusBar.backgroundColor = GeneralColors.globalColor
+//			UIApplication.shared.keyWindow?.addSubview(statusBar)
 		} else {
 			// Fallback on earlier versions
 		}
@@ -80,8 +79,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func setGeneralRootViewController() {
 		
-		//		var navigationController = UINavigationController()
-		//		navigationController = UINavigationController(rootViewController: GeneralTabBarController())
 		window?.rootViewController = GeneralTabBarController()
 		window?.makeKeyAndVisible()
 		window?.backgroundColor = .white
@@ -94,7 +91,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		window?.rootViewController = navigationController
 		window?.makeKeyAndVisible()
 		window?.backgroundColor = .white
-		//		navigationController.setNavigationShadowHidden(true)
 	}
 	
 	

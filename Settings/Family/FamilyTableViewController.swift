@@ -99,7 +99,7 @@ final class FamilyTableViewController: UITableViewController {
 		let parentAction = UIAlertAction(title: "Parent", style: .default) { [weak self] (action) in
 			self?.present(activityViewController, animated: true, completion: nil)
 		}
-		let childAction = UIAlertAction(title: "Children", style: .default) { [weak self] (action) in
+		let childAction = UIAlertAction(title: "Child", style: .default) { [weak self] (action) in
 			self?.present(activityViewController, animated: true, completion: nil)
 		}
 		

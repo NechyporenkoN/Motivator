@@ -10,6 +10,7 @@ import Foundation
 
 protocol TasksTablePresenterDelegate: class {
 
+	var dataSource: [Task] { get }
 }
 
 protocol TasksTableViewDelegate: class {
