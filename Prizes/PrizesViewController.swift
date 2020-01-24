@@ -30,7 +30,8 @@ final class PrizesViewController: UIViewController {
 	}
 
 	private func configureView() {
-		view.backgroundColor = .white
+		
+		view.backgroundColor = GeneralColors.globalColor
 	}
 
 	private func configureSubviews() {

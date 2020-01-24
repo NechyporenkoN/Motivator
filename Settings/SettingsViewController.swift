@@ -14,11 +14,7 @@ final class SettingsViewController: UITableViewController {
 	
 	
 	init() {
-		if #available(iOS 13.0, *) {
-			super.init(style: .insetGrouped)
-		} else {
-			super.init(style: .grouped)
-		}
+		super.init(style: .grouped)
 		presenter = SettingsPresenter(view: self)
 	}
 	
@@ -34,13 +30,14 @@ final class SettingsViewController: UITableViewController {
 	}
 	
 	private func configureView() {
-//		tableView.backgroundColor = .yellow
+//		tableView.sectionH
+		tableView.backgroundColor = GeneralColors.globalColor
 //		tableView.separatorColor = GeneralColors.globalColor
-//		tableView.keyboardDismissMode = .interactive
-//		tableView.tableHeaderView?.backgroundColor = .cyan
+		tableView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: -10)
+		//		tableView.tableHeaderView?.backgroundColor = .cyan
 		tableView.register(SettingsUserProfileTableViewCell.self, forCellReuseIdentifier: String(describing: SettingsUserProfileTableViewCell.self))
 		tableView.register(SettingsFamilyTableViewCell.self, forCellReuseIdentifier: String(describing: SettingsFamilyTableViewCell.self))
-		tableView.register(SettingsCoinsTableViewCell.self, forCellReuseIdentifier: String(describing: SettingsCoinsTableViewCell.self))
+		tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: String(describing: SettingsTableViewCell.self))
 	}
 	
 	private func configureSubviews() {
@@ -48,10 +45,10 @@ final class SettingsViewController: UITableViewController {
 		//constraints
 	}
 	
-//	private func showAddUserDataController() {
-//		let destination = AddUserDataTableViewController(user: presenter?.currentUser)
-//		navigationController?.show(destination, sender: self)
-//	}
+	//	private func showAddUserDataController() {
+	//		let destination = AddUserDataTableViewController(user: presenter?.currentUser)
+	//		navigationController?.show(destination, sender: self)
+	//	}
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		return presenter?.dataSource.count ?? 3
@@ -66,40 +63,43 @@ final class SettingsViewController: UITableViewController {
 		let section = presenter.dataSource[indexPath.section][indexPath.row]
 		switch section {
 		case .userProfile:
-			let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SettingsUserProfileTableViewCell.self), for: indexPath) as! SettingsUserProfileTableViewCell
-			cell.configure(user: presenter.currentUser)
+			let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SettingsTableViewCell.self), for: indexPath) as! SettingsTableViewCell
+			cell.configure(title: "Profile", iconName: "Profile")
+			cell.cornerRect = .topLeft
 			return cell
 		case .family:
-			let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SettingsFamilyTableViewCell.self), for: indexPath) as! SettingsFamilyTableViewCell
-//			cell.configure(user: presenter.currentUser)
+			let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SettingsTableViewCell.self), for: indexPath) as! SettingsTableViewCell
+					cell.configure(title: "Family", iconName: "Family")
 			return cell
-		case .mCoins:
-			let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SettingsCoinsTableViewCell.self), for: indexPath) as! SettingsCoinsTableViewCell
-//			cell.configure(user: presenter.currentUser)
+		case .stars:
+			let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SettingsTableViewCell.self), for: indexPath) as! SettingsTableViewCell
+						cell.configure(title: "Motivation Star", iconName: "Star")
+			cell.cornerRect = .bottomRight
 			return cell
 		}
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return indexPath.section == 0 ? 120 : 44
+		return 60
 	}
 	
 	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		return nil
 	}
 	
-	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		if section == 0 {
-			return "Profile"
-		}
-		if section == 1 {
-			return "Family"
-		}
-		return nil
-	}
+//	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//		if section == 0 {
+//			return "Profile"
+//		}
+//		if section == 1 {
+//			return "Family"
+//		}
+//		return nil
+//	}
+
 	
 	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return 30//section == 2 ? 0 : 16
+		return 10//30//section == 2 ? 0 : 16
 	}
 	
 	override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -119,12 +119,12 @@ final class SettingsViewController: UITableViewController {
 			navigationController?.show(destination, sender: self)
 		case .family:
 			if presenter.currentUser?.familyID != nil {
-			let destination = FamilyTableViewController(currentUser: presenter.currentUser)
-			navigationController?.show(destination, sender: self)
+				let destination = FamilyTableViewController(currentUser: presenter.currentUser)
+				navigationController?.show(destination, sender: self)
 			} else {
 				showActionSheet()
 			}
-		case .mCoins:
+		case .stars:
 			print("coins")
 		}
 	}
@@ -137,7 +137,7 @@ final class SettingsViewController: UITableViewController {
 		let joinAction = UIAlertAction(title: "Join", style: .default) { [weak self] (action) in
 			print("Join")
 			let destination = JoinFamilyTableViewController(currentUser: self?.presenter?.currentUser)
-//			self?.present(destination, animated: true, completion: nil)
+			//			self?.present(destination, animated: true, completion: nil)
 			self?.navigationController?.show(destination, sender: self)
 		}
 		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))

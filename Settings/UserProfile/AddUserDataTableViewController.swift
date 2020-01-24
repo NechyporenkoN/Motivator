@@ -42,10 +42,13 @@ final class AddUserDataTableViewController: UITableViewController {
 		navigationItem.rightBarButtonItem = nextButton
 		//		navigationItem.hidesBackButton = true
 		//		navigationController?.navigationBar.backgroundColor = tableView.backgroundColor
-		tableView.separatorColor = GeneralColors.globalColor
+		//		tableView.separatorColor = GeneralColors.globalColor
+		tableView.separatorStyle = .none
+		tableView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: -10)
+		tableView.backgroundColor = GeneralColors.globalColor
 		tableView.keyboardDismissMode = .interactive
 		tableView.register(AddingUserDataTableViewCell.self, forCellReuseIdentifier: String(describing: AddingUserDataTableViewCell.self))
-		//		tableView.register(FamilyRoleTableViewCell.self, forCellReuseIdentifier: String(describing: FamilyRoleTableViewCell.self))
+		tableView.register(LogOutTableViewCell.self, forCellReuseIdentifier: String(describing: LogOutTableViewCell.self))
 		
 	}
 	
@@ -59,7 +62,7 @@ final class AddUserDataTableViewController: UITableViewController {
 	}
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		return 1
+		return 2
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -68,15 +71,15 @@ final class AddUserDataTableViewController: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		//		if indexPath.section == 0 {
-		let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddingUserDataTableViewCell.self), for: indexPath) as! AddingUserDataTableViewCell
+		if indexPath.section == 0 {
+			let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddingUserDataTableViewCell.self), for: indexPath) as! AddingUserDataTableViewCell
+			cell.delegate = self
+			cell.configure(newImage: avatarImage, user: presenter?.currentUser)
+			return cell
+		}
+		let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: LogOutTableViewCell.self), for: indexPath) as! LogOutTableViewCell
 		cell.delegate = self
-		cell.configure(newImage: avatarImage, user: presenter?.currentUser)
 		return cell
-		//		}
-		//		let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: FamilyRoleTableViewCell.self), for: indexPath) as! FamilyRoleTableViewCell
-		//		cell.configure(role: presenter?.familyRole)
-		//		return cell
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -88,7 +91,7 @@ final class AddUserDataTableViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return 16
+		return 10
 	}
 	
 	override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -233,3 +236,13 @@ extension AddUserDataTableViewController: UIImagePickerControllerDelegate, UINav
 //
 
 //}
+
+extension AddUserDataTableViewController: LogOutTableViewCellDelegate {
+	
+	func logOutDidTap() {
+		presenter?.logOutRequest()
+	}
+	
+	
+}
+

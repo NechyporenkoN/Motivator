@@ -14,9 +14,21 @@ class FamilyMembersTableViewCell: UITableViewCell {
 	private var dataSource: [User]? {
 		didSet {
 			familyCollectionView.reloadData()
-			print("D I D  S E T")
 		}}
-//	private var familyRights: Rights?
+	//	private var familyRights: Rights?
+	private var isEdit: Bool? {
+		didSet {
+			familyCollectionView.reloadData()
+		}
+	}
+	
+	private let helperBackgroundView: UIView = {
+		let view = UIView()
+		view.layer.cornerRadius = 4
+		view.backgroundColor = GeneralColors.navigationBlueColor
+		
+		return view
+	}()
 	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -25,20 +37,21 @@ class FamilyMembersTableViewCell: UITableViewCell {
 		setConstraints()
 	}
 	
-	func configure(dataSource: [User]?) {
-		
+	func configure(dataSource: [User]?, isEditing: Bool?) {
+		isEdit = isEditing
 		guard let dataSource = dataSource else { return }
 		self.dataSource = dataSource
-//		let addMember = User(name: "Add" + " " + (familyRights?.rawValue ?? ""), userID: nil, role: "", avatar: nil, familyID: nil, rights: nil)
-//		self.dataSource.append(addMember)
-//		dump(dataSource)
-//		familyCollectionView.reloadData()
+		//		let addMember = User(name: "Add" + " " + (familyRights?.rawValue ?? ""), userID: nil, role: "", avatar: nil, familyID: nil, rights: nil)
+		//		self.dataSource.append(addMember)
+		//		dump(dataSource)
+		//		familyCollectionView.reloadData()
 	}
 	
 	private func configureView() {
 		
 		selectionStyle = .none
-//		backgroundColor = .white
+		backgroundColor = .clear
+		contentView.backgroundColor = .clear
 		
 		let layout = UICollectionViewFlowLayout()
 		layout.scrollDirection = .horizontal
@@ -47,24 +60,34 @@ class FamilyMembersTableViewCell: UITableViewCell {
 		familyCollectionView.backgroundColor = .clear
 		familyCollectionView.dataSource = self
 		familyCollectionView.delegate = self
-		contentView.addSubview(familyCollectionView)
-		familyCollectionView.register(FamilyMemberCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: FamilyMemberCollectionViewCell.self))
-//		familyCollectionView.register(FamilyAddMembersCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: FamilyAddMembersCollectionViewCell.self))
+		familyCollectionView.alwaysBounceHorizontal = true
 		
+		contentView.addSubview(helperBackgroundView)
+		helperBackgroundView.addSubview(familyCollectionView)
+		
+		familyCollectionView.register(FamilyMemberCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: FamilyMemberCollectionViewCell.self))
 	}
 	
 	private func setConstraints() {
 		
 		NSLayoutConstraint.activate([
-			familyCollectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
-			familyCollectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-			familyCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-			familyCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor)
+			familyCollectionView.topAnchor.constraint(equalTo: helperBackgroundView.topAnchor),
+			familyCollectionView.bottomAnchor.constraint(equalTo: helperBackgroundView.bottomAnchor),
+			familyCollectionView.trailingAnchor.constraint(equalTo: helperBackgroundView.trailingAnchor),
+			familyCollectionView.leadingAnchor.constraint(equalTo: helperBackgroundView.leadingAnchor)
 		])
 	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+	
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		helperBackgroundView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 20, height: self.frame.height)
+		helperBackgroundView.roundCorners(corners: [.bottomRight], size: 30)
+		
 	}
 	
 }
@@ -77,7 +100,7 @@ extension FamilyMembersTableViewCell: UICollectionViewDataSource {
 	
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: FamilyMemberCollectionViewCell.self), for: indexPath) as! FamilyMemberCollectionViewCell
-		cell.configure(user: dataSource?[indexPath.row])
+		cell.configure(user: dataSource?[indexPath.row], isEditing: isEdit)
 		return cell
 	}
 }
@@ -85,7 +108,7 @@ extension FamilyMembersTableViewCell: UICollectionViewDataSource {
 extension FamilyMembersTableViewCell: UICollectionViewDelegate {
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//		print(dataSource?[indexPath.row].name)
+		//		print(dataSource?[indexPath.row].name)
 		print("TAP")
 	}
 }
@@ -97,7 +120,7 @@ extension FamilyMembersTableViewCell: UICollectionViewDelegateFlowLayout {
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-		return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) //.zero
+		return UIEdgeInsets(top: 10, left: 4, bottom: 10, right: 10)
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

@@ -75,4 +75,9 @@ final class AddUserDataTablePresenter {
 // MARK: - CreateUserProfileTablePresenterDelegate
 extension AddUserDataTablePresenter: AddUserDataTablePresenterDelegate {
 	
+	func logOutRequest() {
+		print("LOG OUT")
+	}
+	
+	
 }

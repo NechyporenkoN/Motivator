@@ -14,13 +14,7 @@ final class CreateFamilyTableViewController: UITableViewController {
 	private var presenter: CreateFamilyTablePresenterDelegate?
 	
 	init(currentUser: User?) {
-		if #available(iOS 13.0, *) {
-			//			super.init(style: .insetGrouped)
-			super.init(style: .grouped)
-		} else {
-			super.init(style: .grouped)
-		}
-		
+		super.init(style: .plain)
 		presenter = CreateFamilyTablePresenter(view: self)
 	}
 	

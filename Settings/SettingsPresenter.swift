@@ -10,10 +10,10 @@ import Foundation
 import FirebaseDatabase
 import Firebase
 
-enum SettingsType {
+enum SectionType {
 	case userProfile
 	case family
-	case mCoins
+	case stars
 }
 
 final class SettingsPresenter {
@@ -22,7 +22,7 @@ final class SettingsPresenter {
 	
 	var ref: DatabaseReference!
 	var currentUser: User?
-	var dataSource: [[SettingsType]] = [[.userProfile], [.family], [.mCoins]]
+	var dataSource: [[SectionType]] = [[.userProfile], [.family], [.stars]]
 	init(view: SettingsViewDelegate) {
 		self.view = view
 		
@@ -38,7 +38,6 @@ final class SettingsPresenter {
 				let userById = usersData["\(userID)"] as? [String : AnyObject] ?? [:]
 				let user = User(name: userById["name"] as? String, userID: userById["userID"] as? String, role: userById["role"] as? String ?? "", avatar: userById["avatarURL"] as? String, familyID: userById["familyID"] as? String, rights: userById["rights"] as? String)
 				self?.currentUser = user
-//				print(self?.currentUser?.avatar)
 			}
 			self?.view?.tableViewReloadData()
 		})

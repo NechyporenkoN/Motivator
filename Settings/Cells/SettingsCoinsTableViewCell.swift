@@ -8,16 +8,28 @@
 
 import UIKit
 
-class SettingsCoinsTableViewCell: UITableViewCell {
+class SettingsTableViewCell: UITableViewCell {
 	
-	private let coinsTitleLabel: UILabel = {
+	private let titleLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.textColor = .black
-//		label.text = "Coins"
+		//		label.text = "Motivation Star"
 		
 		return label
 	}()
+	
+	private let iconImageView: UIImageView = {
+		let imageView = UIImageView()
+		imageView.translatesAutoresizingMaskIntoConstraints = false
+		imageView.contentMode = .scaleAspectFill
+		//		imageView.image = UIImage(named: "Star")
+		
+		return imageView
+	}()
+	
+	 var helperBackgroundView = UIView()
+	 var cornerRect: UIRectCorner?
 	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -26,24 +38,47 @@ class SettingsCoinsTableViewCell: UITableViewCell {
 		setConstraints()
 	}
 	
+	func configure(title: String?, iconName: String?) {
+		if let title = title {
+			titleLabel.text = title
+		}
+		if let iconName = iconName {
+			iconImageView.image = UIImage(named: iconName)
+		}
+	}
+	
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		helperBackgroundView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 20, height: self.frame.height)
+		guard let cornerRect = cornerRect else { return }
+		helperBackgroundView.roundCorners(corners: [cornerRect], size: 30)
+	}
+	
 	private func configureView() {
-		imageView?.image = UIImage(named: "Coin")
-		imageView?.tintColor = .white
-		imageView?.backgroundColor = .orange
-		imageView?.layer.cornerRadius = 4
-				textLabel?.text = "Coins"
+		
+		contentView.backgroundColor = .clear
+		self.backgroundColor = .clear
+		helperBackgroundView.backgroundColor = GeneralColors.navigationBlueColor
+		contentView.addSubview(helperBackgroundView)
+		helperBackgroundView.addSubview(iconImageView)
 		selectionStyle = .none
-		accessoryType = .disclosureIndicator
-		contentView.addSubview(coinsTitleLabel)
+		helperBackgroundView.addSubview(titleLabel)
 	}
 	
 	private func setConstraints() {
 		
 		NSLayoutConstraint.activate([
-			coinsTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-			coinsTitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-			coinsTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-			coinsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+			titleLabel.topAnchor.constraint(equalTo: helperBackgroundView.topAnchor),
+			titleLabel.bottomAnchor.constraint(equalTo: helperBackgroundView.bottomAnchor),
+			titleLabel.trailingAnchor.constraint(equalTo: helperBackgroundView.trailingAnchor, constant: -16),
+			titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 16)
+		])
+		
+		NSLayoutConstraint.activate([
+			iconImageView.centerYAnchor.constraint(equalTo: helperBackgroundView.centerYAnchor),
+			iconImageView.widthAnchor.constraint(equalToConstant: 32),
+			iconImageView.heightAnchor.constraint(equalToConstant: 32),
+			iconImageView.leadingAnchor.constraint(equalTo: helperBackgroundView.leadingAnchor, constant: 16)
 		])
 	}
 	

@@ -15,6 +15,7 @@ protocol AddUserDataTablePresenterDelegate: class {
 	
 	func uploadAvatarImage(image: UIImage?)
 	func updateUserDataIfNeeded()
+	func logOutRequest()
 }
 
 protocol AddUserDataTableViewDelegate: class {

@@ -14,15 +14,7 @@ protocol SetupFamilyAvatarTableViewCellDelegate: class {
 
 class SetupFamilyAvatarTableViewCell: UITableViewCell {
 	
-	private let deleteAvatarButton: UIButton = {
-		let button = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
-		button.translatesAutoresizingMaskIntoConstraints = false
-		button.layer.borderWidth = 1
-		button.layer.borderColor = UIColor.lightGray.cgColor
-		button.layer.cornerRadius = button.frame.height/2
-		
-		return button
-	}()
+
 	
 	private let avatarImageView: UIImageView = {
 		let imageView = UIImageView()
@@ -33,6 +25,8 @@ class SetupFamilyAvatarTableViewCell: UITableViewCell {
 		
 		return imageView
 	}()
+	
+	var delegate: SetupFamilyAvatarTableViewCellDelegate?
 	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -48,8 +42,8 @@ class SetupFamilyAvatarTableViewCell: UITableViewCell {
 	private func configureView() {
 		
 		contentView.addSubview(avatarImageView)
-		avatarImageView.addSubview(deleteAvatarButton)
-		deleteAvatarButton.addTarget(self, action: #selector(deleteButtonPressed), for: .touchUpInside)
+//		avatarImageView.addSubview(deleteAvatarButton)
+//		deleteAvatarButton.addTarget(self, action: #selector(deleteButtonPressed), for: .touchUpInside)
 		selectionStyle = .none
 	}
 	
@@ -63,14 +57,14 @@ class SetupFamilyAvatarTableViewCell: UITableViewCell {
 		])
 		
 		NSLayoutConstraint.activate([
-			deleteAvatarButton.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
-			deleteAvatarButton.widthAnchor.constraint(equalToConstant: 24),
-			deleteAvatarButton.heightAnchor.constraint(equalToConstant: 24),
-			deleteAvatarButton.trailingAnchor.constraint(equalTo: avatarImageView.trailingAnchor)
+//			deleteAvatarButton.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
+//			deleteAvatarButton.widthAnchor.constraint(equalToConstant: 24),
+//			deleteAvatarButton.heightAnchor.constraint(equalToConstant: 24),
+//			deleteAvatarButton.trailingAnchor.constraint(equalTo: avatarImageView.trailingAnchor)
 		])
 	}
 	
 	@objc func deleteButtonPressed() {
-		
+		delegate?.deleteButtonDidTap()
 	}
 }

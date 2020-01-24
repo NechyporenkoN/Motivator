@@ -11,7 +11,7 @@ import Foundation
 protocol SettingsPresenterDelegate: class {
 
 	var currentUser: User? { get }
-	var dataSource: [[SettingsType]] { get }
+	var dataSource: [[SectionType]] { get }
 }
 
 protocol SettingsViewDelegate: class {

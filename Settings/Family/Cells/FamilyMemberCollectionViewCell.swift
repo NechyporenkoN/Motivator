@@ -10,10 +10,23 @@ import UIKit
 
 class FamilyMemberCollectionViewCell: UICollectionViewCell {
 	
+	private let deleteButton: UIButton = {
+		let button = UIButton()
+		button.translatesAutoresizingMaskIntoConstraints = false
+		button.layer.borderWidth = 1.5
+		button.layer.borderColor = GeneralColors.globalColor.cgColor//GeneralColors.navigationBlueColor.cgColor
+		button.setTitle("X", for: .normal)
+		button.backgroundColor = GeneralColors.navigationBlueColor//GeneralColors.globalColor
+//		button.titleLabel?.textColor = GeneralColors.globalColor//navigationBlueColor
+		button.layer.cornerRadius = 15
+		button.setTitleColor( GeneralColors.globalColor, for: .normal)
+		return button
+	}()
+	
 	let avatarImageView: UIImageView = {
 		let imageView = UIImageView()
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-		imageView.layer.cornerRadius = 50
+		imageView.layer.cornerRadius = 10
 		imageView.contentMode = .scaleAspectFill
 		imageView.layer.masksToBounds = true
 		
@@ -23,7 +36,7 @@ class FamilyMemberCollectionViewCell: UICollectionViewCell {
 	let nameLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.textColor = .black
+		label.textColor = GeneralColors.globalColor
 		label.textAlignment = .center
 		
 		return label
@@ -36,32 +49,31 @@ class FamilyMemberCollectionViewCell: UICollectionViewCell {
 		setConstraints()
 	}
 	
-	func configure(user: User?) {
-//		guard let user = user else { return }
+	func configure(user: User?, isEditing: Bool?) {
 		
 		nameLabel.text = user?.name
 		if let avatar = user?.avatar {
 			avatarImageView.sd_setImage(with: URL(string: avatar), completed: nil)
-			
 			avatarImageView.layer.borderWidth = 0
-		}
-//		else if user?.role == "" {
-//			avatarImageView.image = UIImage(named: "Plus")
-//			nameLabel.text = user?.name
-//		}
-		else {
+		}else {
 			avatarImageView.image = UIImage(named: "UserAvatarHolder")
-//			nameLabel.text = "User"
 			avatarImageView.layer.borderColor = GeneralColors.globalColor.cgColor
 			avatarImageView.layer.borderWidth = 4
-			
 		}
 		
+		if isEditing ?? false {
+			deleteButton.isHidden = false
+		} else {
+			deleteButton.isHidden = true
+		}
 	}
 	
 	private func configureView() {
 		contentView.addSubview(avatarImageView)
 		contentView.addSubview(nameLabel)
+		contentView.addSubview(deleteButton)
+//		deleteButton.layer.cornerRadius = deleteButton.frame.width/2
+		deleteButton.isHidden = true
 	}
 	
 	private func setConstraints() {
@@ -78,6 +90,19 @@ class FamilyMemberCollectionViewCell: UICollectionViewCell {
 			nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 			nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
 		])
+		
+		NSLayoutConstraint.activate([
+			deleteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: -4),
+			deleteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
+			deleteButton.heightAnchor.constraint(equalToConstant: 30),
+			deleteButton.widthAnchor.constraint(equalToConstant: 30)
+		])
+	}
+	
+	override func prepareForReuse() {
+		avatarImageView.image = nil
+		nameLabel.text = nil
+		deleteButton.isHidden = true
 	}
 	
 	required init?(coder: NSCoder) {

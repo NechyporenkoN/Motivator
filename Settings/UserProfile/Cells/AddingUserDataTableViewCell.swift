@@ -11,7 +11,6 @@ import UIKit
 protocol AddPhotoButtonDelegate: class {
 	func addPhotoButtonDidTap()
 }
-
 class AddingUserDataTableViewCell: UITableViewCell {
 	
 	private let addPhotoButton: UIButton = {
@@ -19,7 +18,6 @@ class AddingUserDataTableViewCell: UITableViewCell {
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.setTitle("Add Photo", for: [])
 		button.setTitleColor(GeneralColors.globalColor, for: [])
-		button.layer.cornerRadius = 10
 		button.layer.borderColor = GeneralColors.globalColor.cgColor
 		button.layer.borderWidth = 1
 		
@@ -32,7 +30,7 @@ class AddingUserDataTableViewCell: UITableViewCell {
 		imageView.image = UIImage(named: "UserAvatarHolder")
 		imageView.contentMode = .scaleAspectFill
 		imageView.tintColor = GeneralColors.globalColor
-		//		imageView.layer.cornerRadius = imageView.frame.width/2
+		imageView.layer.cornerRadius = 10
 		imageView.layer.borderColor = GeneralColors.globalColor.cgColor
 		imageView.layer.borderWidth = 1
 		imageView.layer.masksToBounds = true
@@ -52,10 +50,16 @@ class AddingUserDataTableViewCell: UITableViewCell {
 	private let helperViewForTaxtField: UIView = {
 		let view = UIView()
 		view.translatesAutoresizingMaskIntoConstraints = false
-		view.layer.cornerRadius = 10
 		view.layer.borderColor = GeneralColors.globalColor.cgColor
 		view.layer.borderWidth = 1
 		view.backgroundColor = .clear
+		
+		return view
+	}()
+	
+	private let helperBackgroundView: UIView = {
+		let view = UIView()
+		view.layer.cornerRadius = 4
 		
 		return view
 	}()
@@ -96,31 +100,32 @@ class AddingUserDataTableViewCell: UITableViewCell {
 	
 	private func configureView() {
 		selectionStyle = .none
-		contentView.addSubview(avatarImageView)
-		contentView.addSubview(addPhotoButton)
-		contentView.addSubview(helperViewForTaxtField)
+		contentView.backgroundColor = .clear
+		self.backgroundColor = .clear
+		helperBackgroundView.backgroundColor = GeneralColors.navigationBlueColor
+		contentView.addSubview(helperBackgroundView)
+		helperBackgroundView.addSubview(avatarImageView)
+		helperBackgroundView.addSubview(addPhotoButton)
+		helperBackgroundView.addSubview(helperViewForTaxtField)
 		helperViewForTaxtField.addSubview(nameTextField)
 		
 		addPhotoButton.addTarget(self, action: #selector(addPhotoButtonPressed), for: .touchUpInside)
 	}
 	
 	private func setupCornerRadius() {
-		avatarImageView.layer.cornerRadius = 50//avatarImageView.frame.height/2
-		addPhotoButton.layer.cornerRadius = 22.5//addPhotoButton.frame.height/2
-		helperViewForTaxtField.layer.cornerRadius = 22.5//helperViewForTaxtField.frame.height/2
-//		self.layer.cornerRadius = 10
+
+		addPhotoButton.layer.cornerRadius = 22.5
+		helperViewForTaxtField.layer.cornerRadius = 22.5
+
 	}
-	
-//	override func layoutSubviews() {
-//	}
 	
 	private func setConstraints() {
 		
 		NSLayoutConstraint.activate([
 			avatarImageView.heightAnchor.constraint(equalToConstant: 100),
 			avatarImageView.widthAnchor.constraint(equalToConstant: 100),
-			avatarImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-			avatarImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+			avatarImageView.centerYAnchor.constraint(equalTo: helperBackgroundView.centerYAnchor),
+			avatarImageView.leadingAnchor.constraint(equalTo: helperBackgroundView.leadingAnchor, constant: 10)
 		])
 		
 		//		NSLayoutConstraint.activate([
@@ -133,7 +138,7 @@ class AddingUserDataTableViewCell: UITableViewCell {
 		NSLayoutConstraint.activate([
 			addPhotoButton.heightAnchor.constraint(equalToConstant: 45),
 			addPhotoButton.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
-			addPhotoButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -32),
+			addPhotoButton.trailingAnchor.constraint(equalTo: helperBackgroundView.trailingAnchor, constant: -32),
 			addPhotoButton.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 26)
 		])
 		
@@ -141,7 +146,7 @@ class AddingUserDataTableViewCell: UITableViewCell {
 			helperViewForTaxtField.heightAnchor.constraint(equalToConstant: 45),
 			helperViewForTaxtField.bottomAnchor.constraint(equalTo: avatarImageView.bottomAnchor),
 			helperViewForTaxtField.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 10),
-			helperViewForTaxtField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+			helperViewForTaxtField.trailingAnchor.constraint(equalTo: helperBackgroundView.trailingAnchor, constant: -16)
 		])
 		
 		NSLayoutConstraint.activate([
@@ -150,6 +155,12 @@ class AddingUserDataTableViewCell: UITableViewCell {
 			nameTextField.leadingAnchor.constraint(equalTo: helperViewForTaxtField.leadingAnchor, constant: 10),
 			nameTextField.trailingAnchor.constraint(equalTo: helperViewForTaxtField.trailingAnchor, constant: 0)
 		])
+	}
+	
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		helperBackgroundView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 20, height: self.frame.height)
+		helperBackgroundView.roundCorners(corners: [.bottomRight], size: 30)
 	}
 	
 	@objc func addPhotoButtonPressed() {
