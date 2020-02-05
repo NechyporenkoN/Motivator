@@ -36,7 +36,7 @@ final class FamilyTableViewController: UITableViewController {
 		
 		tableView.separatorStyle = .none
 		tableView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: -10)
-		tableView.backgroundColor = GeneralColors.globalColor
+		tableView.backgroundColor = .darkGray
 		tableView.register(FamilyMembersTableViewCell.self, forCellReuseIdentifier: String(describing: FamilyMembersTableViewCell.self))
 		tableView.register(FamilyAvatarTableViewCell.self, forCellReuseIdentifier: String(describing: FamilyAvatarTableViewCell.self))
 		

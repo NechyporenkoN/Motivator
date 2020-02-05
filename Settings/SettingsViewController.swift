@@ -30,11 +30,10 @@ final class SettingsViewController: UITableViewController {
 	}
 	
 	private func configureView() {
-//		tableView.sectionH
-		tableView.backgroundColor = GeneralColors.globalColor
+
+		tableView.backgroundColor = .darkGray
 //		tableView.separatorColor = GeneralColors.globalColor
 		tableView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: -10)
-		//		tableView.tableHeaderView?.backgroundColor = .cyan
 		tableView.register(SettingsUserProfileTableViewCell.self, forCellReuseIdentifier: String(describing: SettingsUserProfileTableViewCell.self))
 		tableView.register(SettingsFamilyTableViewCell.self, forCellReuseIdentifier: String(describing: SettingsFamilyTableViewCell.self))
 		tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: String(describing: SettingsTableViewCell.self))

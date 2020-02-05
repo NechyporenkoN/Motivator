@@ -160,7 +160,7 @@ class AddingUserDataTableViewCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		helperBackgroundView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 20, height: self.frame.height)
-		helperBackgroundView.roundCorners(corners: [.bottomRight], size: 30)
+//		helperBackgroundView.roundCorners(corners: [.bottomRight], size: 30)
 	}
 	
 	@objc func addPhotoButtonPressed() {

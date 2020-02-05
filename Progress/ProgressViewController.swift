@@ -35,7 +35,7 @@ final class ProgressViewController: UIViewController {
 //    self.navigationController?.navigationBar.layer.shadowRadius = 4.0
 //    self.navigationController?.navigationBar.layer.shadowOpacity = 1.0
 //    self.navigationController?.navigationBar.layer.masksToBounds = false
-		view.backgroundColor = GeneralColors.globalColor
+		view.backgroundColor = .darkGray
 	}
 
 	private func configureSubviews() {

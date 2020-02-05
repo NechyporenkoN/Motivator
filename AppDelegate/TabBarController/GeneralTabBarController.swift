@@ -70,13 +70,13 @@ final class GeneralTabBarController: UITabBarController, UITabBarControllerDeleg
 		
 		self.delegate = self
 		
-		UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.clear], for: .normal)
-		UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: GeneralColors.globalColor], for: .selected)
+		UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.darkGray], for: .normal)
+		UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.lightGray], for: .selected)
 		
-		tabBar.unselectedItemTintColor = UIColor(red:0.39, green:0.64, blue:0.82, alpha:1.0)//.white
-		tabBar.tintColor = GeneralColors.globalColor
+		tabBar.unselectedItemTintColor = .darkGray//UIColor(red:0.39, green:0.64, blue:0.82, alpha:1.0)//.white
+		tabBar.tintColor = .lightGray//GeneralColors.globalColor
 		
-		tabBar.roundCorners(corners: [.topRight], size: 35)
+//		tabBar.roundCorners(corners: [.topRight], size: 35)
 		//		tabBar.backgroundColor = GeneralColors.globalColor
 		//		tabBar.shadowImage = UIImage()
 		//		tabBar.backgroundImage = UIImage()
@@ -84,8 +84,8 @@ final class GeneralTabBarController: UITabBarController, UITabBarControllerDeleg
 		//		tabBar.barTintColor = tasksNavigationController?.navigationBar.backgroundColor//.clear//GeneralColors.globalColor
 		//		tabBar.shadowImage = backgroundView.asImage()
 		//				tabBar.shadowImage = UIImage()
-		tabBar.barTintColor = GeneralColors.navigationBlueColor
-		UIView.appearance().tintColor = GeneralColors.globalColor
+		tabBar.barTintColor = .black//GeneralColors.navigationBlueColor
+		UIView.appearance().tintColor = .lightGray//GeneralColors.globalColor
 		setTabs()
 	}
 	
@@ -93,45 +93,15 @@ final class GeneralTabBarController: UITabBarController, UITabBarControllerDeleg
 		
 		let selectedIndex = tabBarController.viewControllers?.firstIndex(of: viewController)!
 		
-		//		backgroundView = UIView(frame: tabBar.frame)
-		//		backgroundView.backgroundColor = GeneralColors.globalColor//UIColor.gradientWithDirection(frame: tabBar.frame, colors: GeneralColors.globalColorsArr, direction: .fromBottomToTop)//GeneralColors.globalColor
-		
 		if selectedIndex == 0 {
-			DispatchQueue.main.async {
-				//				let transition = CATransition()
-				//				transition.type = .fade
-				//				transition.subtype = .fromTop
-				//				transition.duration = 0.1
-				self.tabBar.roundCorners(corners: [.topRight], size: 35)
-				//				self.tabBar.layer.add(transition, forKey: nil)
-			}
+			
+			
 		} else if selectedIndex == 1 {
-			//			DispatchQueue.main.async {
-			//				let transition = CATransition()
-			//				transition.type = .fade
-			//				transition.subtype = .fromTop
-			//				transition.duration = 0.1
-			self.tabBar.roundCorners(corners: [.topRight, .topLeft], size: 35)
-			//				self.tabBar.layer.add(transition, forKey: nil)
-			//			}
+			
 		} else if selectedIndex == 2 {
-			DispatchQueue.main.async {
-				//				let transition = CATransition()
-				//				transition.type = .fade
-				//				transition.subtype = .fromBottom
-				//				transition.duration = 0.1
-				self.tabBar.roundCorners(corners: [.topRight, .topLeft], size: 35)
-				//				self.tabBar.layer.add(transition, forKey: nil)
-			}
+			
 		} else if selectedIndex == 3 {
-			DispatchQueue.main.async {
-				//				let transition = CATransition()
-				//				transition.type = .fade
-				//				transition.subtype = .fromTop
-				//				transition.duration = 0.1
-				self.tabBar.roundCorners(corners: [.topLeft], size: 35)
-				//				self.tabBar.layer.add(transition, forKey: nil)
-			}
+		
 		}
 	}
 	
@@ -153,23 +123,19 @@ final class GeneralTabBarController: UITabBarController, UITabBarControllerDeleg
 		let prizesNavigationController = UINavigationController(rootViewController: prizesController)
 		let settingsNavigationController = UINavigationController(rootViewController: settingsController)
 		
-		let textAttributes = [NSAttributedString.Key.foregroundColor: GeneralColors.globalColor]
+		let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
 		
 		
-		tasksNavigationController.navigationBar.navigationRoundCorners(corners: [.bottomLeft], size: 30)
-		tasksNavigationController.navigationBar.barTintColor = GeneralColors.navigationBlueColor
+		tasksNavigationController.navigationBar.barTintColor = .black
 		tasksNavigationController.navigationBar.titleTextAttributes = textAttributes
 		
-		progressNavigationController.navigationBar.navigationRoundCorners(corners: [.bottomRight, .bottomLeft], size: 30)
-		progressNavigationController.navigationBar.barTintColor = GeneralColors.navigationBlueColor
+		progressNavigationController.navigationBar.barTintColor = .black
 		progressNavigationController.navigationBar.titleTextAttributes = textAttributes
 		
-		prizesNavigationController.navigationBar.navigationRoundCorners(corners: [.bottomRight, .bottomLeft], size: 30)
-		prizesNavigationController.navigationBar.barTintColor = GeneralColors.navigationBlueColor
+		prizesNavigationController.navigationBar.barTintColor = .black
 		prizesNavigationController.navigationBar.titleTextAttributes = textAttributes
 		
-		settingsNavigationController.navigationBar.navigationRoundCorners(corners: [.bottomRight], size: 30)
-		settingsNavigationController.navigationBar.barTintColor = GeneralColors.navigationBlueColor
+		settingsNavigationController.navigationBar.barTintColor = .black
 		settingsNavigationController.navigationBar.titleTextAttributes = textAttributes
 		
 		let tasksImage = UIImage(named: "TabBarTask")

@@ -19,7 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	var navigationController = UINavigationController()
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-//		application.statusBarStyle = .lightContent
+		application.statusBarStyle = .lightContent
+//		UIVisualEffectView.appearance(whenContainedInInstancesOf: [UIAlertController.classForCoder() as! UIAppearanceContainer.Type]).effect = UIBlurEffect(style: .dark)
 		FirebaseApp.configure()
 		Database.database().isPersistenceEnabled = true
 		
@@ -55,10 +56,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			window?.makeKeyAndVisible()
 		}
 
-		window?.backgroundColor = .white
-		UINavigationBar.appearance().tintColor = GeneralColors.globalColor//.white
-		UINavigationBar.appearance().backgroundColor = .white//GeneralColors.globalColor
-
+		window?.backgroundColor = .black
+		UINavigationBar.appearance().tintColor = .lightGray//GeneralColors.globalColor//.white
+		UINavigationBar.appearance().backgroundColor = .black//GeneralColors.globalColor
+	
 		
 //		UITabBar.appearance().layer.borderWidth = 1.0
 //		UITabBar.appearance().layer.borderColor = UIColor.red.cgColor

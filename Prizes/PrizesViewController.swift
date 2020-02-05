@@ -8,12 +8,7 @@
 
 import UIKit
 
-/**
-IMPORTANT:
-IF YOU NEED UITableViewController or UICollectionViewController
-Change the Class Name to NameTableViewController or NameCollectionViewController
-Dont leave Your class name NameViewController
-*/
+
 final class PrizesViewController: UIViewController {
 
 	private var presenter: PrizesPresenterDelegate?
@@ -31,7 +26,7 @@ final class PrizesViewController: UIViewController {
 
 	private func configureView() {
 		
-		view.backgroundColor = GeneralColors.globalColor
+		view.backgroundColor = .darkGray
 	}
 
 	private func configureSubviews() {

@@ -45,7 +45,7 @@ final class AddUserDataTableViewController: UITableViewController {
 		//		tableView.separatorColor = GeneralColors.globalColor
 		tableView.separatorStyle = .none
 		tableView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: -10)
-		tableView.backgroundColor = GeneralColors.globalColor
+		tableView.backgroundColor = .darkGray
 		tableView.keyboardDismissMode = .interactive
 		tableView.register(AddingUserDataTableViewCell.self, forCellReuseIdentifier: String(describing: AddingUserDataTableViewCell.self))
 		tableView.register(LogOutTableViewCell.self, forCellReuseIdentifier: String(describing: LogOutTableViewCell.self))
