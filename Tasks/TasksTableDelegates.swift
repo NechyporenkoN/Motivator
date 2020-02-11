@@ -11,8 +11,11 @@ import Foundation
 protocol TasksTablePresenterDelegate: class {
 
 	var dataSource: [Task] { get }
+	var currentUser: User? { get }
 }
 
 protocol TasksTableViewDelegate: class {
 
+	func tableViewReloadData()
+	func configureAddTaskButton()
 }

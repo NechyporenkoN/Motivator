@@ -8,26 +8,18 @@
 
 import UIKit
 
-protocol SetupFamilyAvatarTableViewCellDelegate: class {
-	func deleteButtonDidTap()
-}
-
 class SetupFamilyAvatarTableViewCell: UITableViewCell {
-	
-
 	
 	private let avatarImageView: UIImageView = {
 		let imageView = UIImageView()
-		imageView.contentMode = .scaleAspectFill
+		imageView.contentMode = .scaleAspectFit
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		imageView.clipsToBounds = true
-		imageView.image = UIImage(named: "BackgroundGradient")
-		
+		imageView.image = UIImage(named: "FamilyAvatarHolder")
+		imageView.backgroundColor = .darkGray
 		return imageView
 	}()
-	
-	var delegate: SetupFamilyAvatarTableViewCellDelegate?
-	
+		
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		
@@ -35,6 +27,16 @@ class SetupFamilyAvatarTableViewCell: UITableViewCell {
 		setConstraints()
 	}
 	
+	func configure(avatar: UIImage?) {
+		if avatar != nil {
+			avatarImageView.contentMode = .scaleToFill
+			avatarImageView.image = avatar
+		} else {
+			avatarImageView.contentMode = .scaleAspectFit
+			avatarImageView.image = UIImage(named: "FamilyAvatarHolder")
+		}
+		
+	}
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
@@ -42,9 +44,8 @@ class SetupFamilyAvatarTableViewCell: UITableViewCell {
 	private func configureView() {
 		
 		contentView.addSubview(avatarImageView)
-//		avatarImageView.addSubview(deleteAvatarButton)
-//		deleteAvatarButton.addTarget(self, action: #selector(deleteButtonPressed), for: .touchUpInside)
 		selectionStyle = .none
+		separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 	}
 	
 	private func setConstraints() {
@@ -55,16 +56,5 @@ class SetupFamilyAvatarTableViewCell: UITableViewCell {
 			avatarImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 			avatarImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
 		])
-		
-		NSLayoutConstraint.activate([
-//			deleteAvatarButton.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
-//			deleteAvatarButton.widthAnchor.constraint(equalToConstant: 24),
-//			deleteAvatarButton.heightAnchor.constraint(equalToConstant: 24),
-//			deleteAvatarButton.trailingAnchor.constraint(equalTo: avatarImageView.trailingAnchor)
-		])
-	}
-	
-	@objc func deleteButtonPressed() {
-		delegate?.deleteButtonDidTap()
 	}
 }

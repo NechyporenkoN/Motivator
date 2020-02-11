@@ -24,7 +24,7 @@ final class TaskTableViewCell: UITableViewCell {
 		imageView.image = UIImage(named: "lol")
 		imageView.layer.cornerRadius = 20
 		imageView.layer.borderWidth = 1
-		imageView.layer.borderColor = UIColor.lightGray.cgColor//GeneralColors.globalColor.cgColor
+		imageView.layer.borderColor = UIColor.lightGray.cgColor
 		imageView.layer.masksToBounds = true
 		
 		return imageView
@@ -41,9 +41,8 @@ final class TaskTableViewCell: UITableViewCell {
 	
 	private let timeLabel: UILabel = {
 		let label = UILabel()
-		label.text = "1d 5h 30m"
 		label.textAlignment = .center
-		label.textColor = .lightGray//GeneralColors.globalColor
+		label.textColor = .lightGray
 		return label
 	}()
 	
@@ -58,9 +57,8 @@ final class TaskTableViewCell: UITableViewCell {
 	
 	private let starLabel: UILabel = {
 		let label = UILabel()
-		label.text = "20"
 		label.textAlignment = .center
-		label.textColor = .lightGray//GeneralColors.globalColor
+		label.textColor = .lightGray
 		return label
 	}()
 	
@@ -75,17 +73,14 @@ final class TaskTableViewCell: UITableViewCell {
 	
 	private let priorityLabel: UILabel = {
 		let label = UILabel()
-		label.text = "high"
 		label.textAlignment = .center
-		label.textColor = .lightGray//GeneralColors.globalColor
+		label.textColor = .lightGray
 		return label
 	}()
 	
 	private let taskNameLabel: UILabel = {
 		let label = UILabel()
-		//		label.translatesAutoresizingMaskIntoConstraints = false
 		label.textColor = .lightGray
-		label.text = "Сlean the room"
 		label.textAlignment = .center
 		return label
 	}()
@@ -94,21 +89,18 @@ final class TaskTableViewCell: UITableViewCell {
 		let stack = UIStackView()
 		stack.axis = .vertical
 		stack.distribution = .fillProportionally
-		
 		return stack
 	}()
 	
 	private let starStackView: UIStackView = {
 		let stack = UIStackView()
 		stack.axis = .vertical
-		
 		return stack
 	}()
 	
 	private let priorityStackView: UIStackView = {
 		let stack = UIStackView()
 		stack.axis = .vertical
-		
 		return stack
 	}()
 	
@@ -117,7 +109,6 @@ final class TaskTableViewCell: UITableViewCell {
 		stack.axis = .horizontal
 		stack.distribution = .fillEqually
 		stack.tintColor = .lightGray
-		
 		return stack
 	}()
 	
@@ -126,7 +117,6 @@ final class TaskTableViewCell: UITableViewCell {
 		typeLabel.translatesAutoresizingMaskIntoConstraints = false
 		typeLabel.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
 		typeLabel.textAlignment = .center
-		
 		return typeLabel
 	}()
 	
@@ -135,7 +125,6 @@ final class TaskTableViewCell: UITableViewCell {
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.textAlignment = .center
 		label.textColor = .lightGray
-		label.text = "Username"
 		return label
 	}()
 	
@@ -145,7 +134,6 @@ final class TaskTableViewCell: UITableViewCell {
 		textView.backgroundColor = .clear
 		textView.textAlignment = .justified
 		textView.isUserInteractionEnabled = false
-		textView.text = "Angry Birds – популярная мобильная игра, завоевавшая миллионы поклонников во всем мире. Все прекрасно знают правила, но никто даже не подозревает, с чего началось противостояние птичек и свинок. Также мало кто знает о некоторых секретах главных персонажей игры... С самого детства Рэд был настоящей «белой вороной» и был вынужден терпеть постоянные насмешки и издевательства со стороны своих сверстников. Теперь он вырос, но его жизнь совершенно не изменилась. За долгое время у него скопилось множество обиды и злости, что привело к тому, что он больше не мог удерживать в себе гнев. Это еще больше отдалило его от других и все старались избегать общения с ним. Больше всего Рэд хочет изменить свою жизнь и однажды у него появляется такая возможность... Смотрите онлайн фильм «Энгри Бердс в кино / Angry Birds в кино» в хорошем HD качестве на нашем сайте, бесплатно и без регистрации."
 		textView.textColor = .lightGray
 		textView.font = UIFont.systemFont(ofSize: 16)
 		return textView
@@ -166,38 +154,72 @@ final class TaskTableViewCell: UITableViewCell {
 		
 		configureView()
 		setConstraints()
-		
-		
+//		configureGesture()
 	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func configure(task: Task?, isSelected: Bool) {
+	func configure(task: Task?, isSelected: Bool, rights: String) {
+		
 		selectedCell = isSelected
 		guard let task = task else { return }
 		if task.status == StatusTask.active.rawValue {
 			typeLabel.text = "Active"
 			typeLabel.textColor = GeneralColors.lightGreenCellColor
-			helperBackgroundView.backgroundColor = GeneralColors.greenTextColor
+			helperBackgroundView.backgroundColor = GeneralColors.greenCellColor
+			taskNameLabel.text = task.taskName
 		}
 		else if task.status == StatusTask.awaiting.rawValue {
 			typeLabel.text = "Awaiting"
 			typeLabel.textColor = GeneralColors.lightOrangeCellColor
-			helperBackgroundView.backgroundColor = GeneralColors.orangeTextColor
+			helperBackgroundView.backgroundColor = GeneralColors.orangeCellColor
 		}
 		else if task.status == StatusTask.ready.rawValue {
 			typeLabel.text = "Ready"
 			typeLabel.textColor = GeneralColors.lightPurpleCellColor
-			helperBackgroundView.backgroundColor = GeneralColors.purpleTextColor
+			helperBackgroundView.backgroundColor = GeneralColors.purpleCellColor
 		}
 		else if task.status == StatusTask.unfulfilled.rawValue {
 			typeLabel.text = "Unfulfilled"
 			typeLabel.textColor = GeneralColors.lightRedCellColor
-			helperBackgroundView.backgroundColor = GeneralColors.redTextColor
+			helperBackgroundView.backgroundColor = GeneralColors.redCellColor
 		}
+		
+		if rights == Rights.child.rawValue {
+			if let avatarURL = task.ownerAvatar {
+				avatarImageView.sd_setImage(with: URL(string: avatarURL), completed: nil)
+			} else {
+				avatarImageView.image = UIImage(named: "UserAvatarHolder")
+			}
+			userNameLabel.text = task.ownerName
+		} else if rights == Rights.parent.rawValue {
+			if let avatarURL = task.performerAvatar {
+				avatarImageView.sd_setImage(with: URL(string: avatarURL), completed: nil)
+			} else {
+				avatarImageView.image = UIImage(named: "UserAvatarHolder")
+			}
+			userNameLabel.text = task.performerName
+		}
+		descriptionTextView.text = task.taskBody
+		timeLabel.text = task.deadline
+		starLabel.text = task.price
+		priorityLabel.text = task.priority
 	}
+	
+//	var gestureRecognizer: UIPanGestureRecognizer!
+	
+//	private func configureGesture() {
+//		gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(wasDragged))
+//		helperContentView.addGestureRecognizer(gestureRecognizer)
+//		gestureRecognizer.delegate = self
+//	}
+	
+//	@objc func wasDragged() {
+//			let translation = gestureRecognizer.translation(in: self)
+//			helperContentView.frame.origin.x = translation.x + 30
+//	}
 	
 	private func configureView() {
 		
@@ -205,6 +227,7 @@ final class TaskTableViewCell: UITableViewCell {
 		accessoryType = .none
 		backgroundColor = .clear
 		
+		separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 		firstVerticalView.backgroundColor = .lightGray
 		secondVerticalView.backgroundColor = .lightGray
 		
@@ -221,7 +244,7 @@ final class TaskTableViewCell: UITableViewCell {
 		generalStackView.addArrangedSubview(timeStackView)
 		generalStackView.addArrangedSubview(priorityStackView)
 		
-		helperBackgroundView.frame = CGRect(x: 0, y: 2, width: width, height: height - 2)
+//		helperBackgroundView.frame = CGRect(x: 0, y: 2, width: width, height: height - 2)
 		helperBackgroundView.translatesAutoresizingMaskIntoConstraints = false
 		contentView.addSubview(helperBackgroundView)
 		
@@ -237,19 +260,18 @@ final class TaskTableViewCell: UITableViewCell {
 		
 		avatarImageView.translatesAutoresizingMaskIntoConstraints = false
 		userNameLabel.alpha = 0
+		
 		helperContentView.addSubview(userNameLabel)
 		
-		generalStackView.frame = CGRect(x: 0, y: 30, width: width - 30, height: 80)
+		generalStackView.frame = CGRect(x: 0, y: 30, width: width - 30, height: 90)
 		helperContentView.addSubview(generalStackView)
 		taskNameLabel.frame = CGRect(x: 0, y: 2, width: width - 30, height: 20)
 		helperContentView.addSubview(taskNameLabel)
-		firstVerticalView.frame = CGRect(x: generalStackView.frame.width/3, y: 4, width: 1, height: generalStackView.frame.height - 30)
-		secondVerticalView.frame = CGRect(x: (generalStackView.frame.width/3) * 2, y: 4, width: 1, height: generalStackView.frame.height - 30)
+		firstVerticalView.frame = CGRect(x: generalStackView.frame.width/3, y: 4, width: 1, height: generalStackView.frame.height - 40)
+		secondVerticalView.frame = CGRect(x: (generalStackView.frame.width/3) * 2, y: 4, width: 1, height: generalStackView.frame.height - 40)
 		generalStackView.addSubview(firstVerticalView)
 		generalStackView.addSubview(secondVerticalView)
-		
 		helperBackgroundView.addSubview(typeLabel)
-		
 	}
 	
 	
@@ -272,7 +294,7 @@ final class TaskTableViewCell: UITableViewCell {
 			
 			userNameLabel.heightAnchor.constraint(equalToConstant: 16),
 			userNameLabel.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
-			userNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor, constant: 50),
+			userNameLabel.trailingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 24),
 			
 			helperContentView.topAnchor.constraint(equalTo: helperBackgroundView.topAnchor),
 			helperContentView.leadingAnchor.constraint(equalTo: helperBackgroundView.leadingAnchor, constant: 30),
@@ -284,7 +306,6 @@ final class TaskTableViewCell: UITableViewCell {
 			helperBackgroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 			helperBackgroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 			
-			
 			avatarImageView.heightAnchor.constraint(equalToConstant: 80),
 			avatarImageView.widthAnchor.constraint(equalToConstant: 80),
 			avatarImageView.bottomAnchor.constraint(equalTo: helperContentView.bottomAnchor, constant: -20),
@@ -294,10 +315,6 @@ final class TaskTableViewCell: UITableViewCell {
 			descriptionTextView.centerYAnchor.constraint(equalTo: helperContentView.centerYAnchor),
 			descriptionTextView.heightAnchor.constraint(equalToConstant: height + 20),
 			descriptionTextView.centerXAnchor.constraint(equalTo: helperContentView.centerXAnchor, constant: 30),
-			//			descriptionTextView.bottomAnchor.constraint(equalTo: helperContentView.bottomAnchor, constant: -20),
-			//			descriptionTextView.topAnchor.constraint(equalTo: helperContentView.topAnchor, constant: 20)
-			
-			
 		])
 	}
 	
@@ -305,33 +322,27 @@ final class TaskTableViewCell: UITableViewCell {
 		
 		height = 120
 		
-		taskNameLabel.frame = CGRect(x: 10, y: 6, width: width - 20, height: 20)
-		generalStackView.frame = CGRect(x: 0, y: 30, width: width - 30, height: 80)
-		firstVerticalView.frame = CGRect(x: generalStackView.frame.width/3, y: 4, width: 1, height: generalStackView.frame.height - 30)
-		secondVerticalView.frame = CGRect(x: (generalStackView.frame.width/3) * 2, y: 4, width: 1, height: generalStackView.frame.height - 30)
+		generalStackView.frame = CGRect(x: 0, y: 30, width: width - 30, height: 90)
+		firstVerticalView.frame = CGRect(x: generalStackView.frame.width/3, y: 4, width: 1, height: generalStackView.frame.height - 50)
+		secondVerticalView.frame = CGRect(x: (generalStackView.frame.width/3) * 2, y: 4, width: 1, height: generalStackView.frame.height - 50)
 		taskNameLabel.frame = CGRect(x: 0, y: 2, width: width - 30, height: 20)
 	}
 	
 	private func setRotateFrameViews() {
-		
-		//		avatarImageView.frame.origin.x = 6
-		//		avatarImageView.frame.origin.y = 260
 		
 		generalStackView.frame.origin.x = -50
 		generalStackView.frame.origin.y = 110
 		generalStackView.frame.size.width = width/1.5
 		taskNameLabel.frame.origin.y = 142
 		taskNameLabel.frame.origin.x = -158
-		firstVerticalView.frame = CGRect(x: generalStackView.frame.width/3, y: 4, width: 1, height: generalStackView.frame.height - 36)
-		secondVerticalView.frame = CGRect(x: (generalStackView.frame.width/3) * 2, y: 4, width: 1, height: generalStackView.frame.height - 36)
+		firstVerticalView.frame = CGRect(x: generalStackView.frame.width/3, y: 4, width: 1, height: generalStackView.frame.height - 56)
+		secondVerticalView.frame = CGRect(x: (generalStackView.frame.width/3) * 2, y: 4, width: 1, height: generalStackView.frame.height - 56)
 		
 		
 	}
 	
 	func cellDidTap() {
 		
-		//		helperBackgroundView.layer.add(bounceAnimation, forKey: nil)
-		//		helperContentView.layer.add(bounceAnimation, forKey: nil)
 		contentView.layer.add(bounceAnimation, forKey: nil)
 		if !self.isRotate {
 			UIView.animate(withDuration: 0.2, animations: {
@@ -364,8 +375,8 @@ final class TaskTableViewCell: UITableViewCell {
 	}
 	
 	private func restoreContent() {
+		
 		contentView.transform = .identity
-		//		helperBackgroundView.transform = .identity
 		//		helperContentView.transform = .identity
 		avatarImageView.transform = .identity
 		generalStackView.transform = .identity
@@ -376,11 +387,11 @@ final class TaskTableViewCell: UITableViewCell {
 	
 	
 	private func rotateContent() {
+		
 		contentView.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / -2)
-		//		helperBackgroundView.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / -2)
-		//		helperContentView.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / -2)
 		avatarImageView.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
 		generalStackView.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
+		//		helperContentView.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
 		taskNameLabel.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
 		userNameLabel.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
 		descriptionTextView.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
@@ -389,25 +400,26 @@ final class TaskTableViewCell: UITableViewCell {
 	override func prepareForReuse() {
 		super.prepareForReuse()
 		
-			setNormalFrameViews()
-			typeLabel.text = nil
-			typeLabel.textColor = nil
-			helperBackgroundView.backgroundColor = nil
-			helperContentView.backgroundColor = .darkGray
-			avatarImageView.alpha = 0
-			userNameLabel.alpha = 0
-			descriptionTextView.alpha = 0
-			restoreContent()
-			setNormalFrameViews()
-		
+		setNormalFrameViews()
+		typeLabel.text = nil
+		typeLabel.textColor = nil
+		helperBackgroundView.backgroundColor = nil
+		helperContentView.backgroundColor = .darkGray
+		avatarImageView.alpha = 0
+		userNameLabel.alpha = 0
+		descriptionTextView.alpha = 0
+		restoreContent()
+		setNormalFrameViews()
+		avatarImageView.image = nil
+		taskNameLabel.text = nil
+		descriptionTextView.text = nil
+		starLabel.text = nil
+		priorityLabel.text = nil
+		timeLabel.text = nil
 	}
 	
-
 	override func layoutSubviews() {
 		super.layoutSubviews()
-//		print("  ololololololollololollol       lolo ol olo lo lo llo ol", width)
-//		print("  G G G G G G G G G G G G ", contentView.frame.height)
-		
-		contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0))
+		contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0))
 	}
 }

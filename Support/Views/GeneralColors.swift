@@ -13,20 +13,20 @@ class GeneralColors {
 	static let globalColor = UIColor(red: 0, green: 0.33, blue: 0.58, alpha: 1.0)
 	static let navigationBlueColor = UIColor(red:0.80, green:0.90, blue:0.98, alpha:1.0)
 	
-	static let greenCellColor = UIColor(red:0.76, green:0.97, blue:0.76, alpha:1.0)
-	static let orangeCellColor = UIColor(red:0.98, green:0.86, blue:0.64, alpha:1.0)
-	static let purpleCellColor = UIColor(red:0.82, green:0.67, blue:1.00, alpha:1.0)
-	static let redCellColor = UIColor(red:1.00, green:0.50, blue:0.50, alpha:1.0)
+//	static let greenCellColor = UIColor(red:0.76, green:0.97, blue:0.76, alpha:1.0)
+//	static let orangeCellColor = UIColor(red:0.98, green:0.86, blue:0.64, alpha:1.0)
+//	static let purpleCellColor = UIColor(red:0.82, green:0.67, blue:1.00, alpha:1.0)
+//	static let redCellColor = UIColor(red:1.00, green:0.50, blue:0.50, alpha:1.0)
 	
 	static let lightGreenCellColor = UIColor(red:0.92, green:1.00, blue:0.92, alpha:1.0)
 	static let lightOrangeCellColor = UIColor(red:0.99, green:0.96, blue:0.91, alpha:1.0)
 	static let lightPurpleCellColor = UIColor(red:0.95, green:0.91, blue:1.00, alpha:1.0)
 	static let lightRedCellColor = UIColor(red:1.00, green:0.90, blue:0.90, alpha:1.0)
 	
-	static let greenTextColor = UIColor(red:0.00, green:0.56, blue:0.00, alpha:1.0)
-	static let orangeTextColor = UIColor(red:0.97, green:0.42, blue:0.11, alpha:1.0)
-	static let purpleTextColor = UIColor(red:0.46, green:0.00, blue:1.00, alpha:1.0)
-	static let redTextColor = UIColor(red:1.00, green:0.00, blue:0.00, alpha:1.0)
+	static let greenCellColor = UIColor(red:0.00, green:0.56, blue:0.00, alpha:1.0)
+	static let orangeCellColor = UIColor(red:0.97, green:0.42, blue:0.11, alpha:1.0)
+	static let purpleCellColor = UIColor(red:0.46, green:0.00, blue:1.00, alpha:1.0)
+	static let redCellColor = UIColor(red:1.00, green:0.00, blue:0.00, alpha:1.0)
 	
 	
 	

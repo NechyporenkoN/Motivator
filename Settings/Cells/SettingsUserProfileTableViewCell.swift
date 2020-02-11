@@ -62,8 +62,8 @@ class SettingsUserProfileTableViewCell: UITableViewCell {
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		helperBackgroundView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 20, height: self.frame.height)
-		helperBackgroundView.roundCorners(corners: [.topLeft], size: 30)
+//		helperBackgroundView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 20, height: self.frame.height)
+//		helperBackgroundView.roundCorners(corners: [.topLeft], size: 30)
 		
 //		guard let currentAvatarURL = currentAvatarURL else { return }
 ////		avatarImageView.sd_setImage(with: URL(string: currentAvatarURL), completed: nil)
@@ -84,11 +84,11 @@ class SettingsUserProfileTableViewCell: UITableViewCell {
 	
 	private func configureView() {
 		contentView.backgroundColor = .clear
-		self.backgroundColor = .clear
+		self.backgroundColor = .darkGray
 //		helperBackgroundView.frame = CGRect(x: 10, y: 0, width: UIScreen.main.bounds.size.width - 20, height: self.frame.height)
 //		helperBackgroundView.roundCorners(corners: [.bottomRight, .topLeft], size: 35)
-		helperBackgroundView.backgroundColor = GeneralColors.navigationBlueColor
-		contentView.addSubview(helperBackgroundView)
+//		helperBackgroundView.backgroundColor = GeneralColors.navigationBlueColor
+		addSubview(helperBackgroundView)
 		
 //		avatarImageView.roundCorners(corners: [.bottomRight, .topLeft], size: 30)
 //		self.roundCorners(corners: [.bottomRight, .topLeft], size: 35)

@@ -15,6 +15,7 @@ class JoinFamilyIDTableViewCell: UITableViewCell {
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.textAlignment = .center
 		label.text = "Plase enter family ID"
+		label.textColor = .lightGray
 		return label
 	}()
 
@@ -22,7 +23,9 @@ class JoinFamilyIDTableViewCell: UITableViewCell {
 		let textField = UITextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
 		textField.textAlignment = .center
-		textField.placeholder = "family ID"
+//		textField.placeholder = "family ID"
+		textField.attributedPlaceholder = NSAttributedString(string: "family ID", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
+		textField.textColor = .lightGray
 		return textField
 	}()
 	
@@ -46,7 +49,8 @@ class JoinFamilyIDTableViewCell: UITableViewCell {
 	}
 	
 	private func configureView() {
-//		accessoryType = .disclosureIndicator
+
+		backgroundColor = .darkGray
 		selectionStyle = .none
 		contentView.addSubview(titleFamilyID)
 		contentView.addSubview(familyIDTextField)

@@ -27,8 +27,9 @@ final class User {
 	var avatar: String?
 	var familyID: String?
 	var rights: String?
+	var tasks: [String]?
 	
-	convenience init(name: String?, userID: String?, role: String, avatar: String?, familyID: String?, rights: String?) {
+	convenience init(name: String?, userID: String?, role: String, avatar: String?, familyID: String?, rights: String?, tasks: [String]?) {
 		self.init()
 		self.name = name
 		self.userID = userID
@@ -36,5 +37,6 @@ final class User {
 		self.avatar = avatar
 		self.familyID = familyID
 		self.rights = rights
+		self.tasks = tasks
 	}
 }

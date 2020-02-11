@@ -17,7 +17,7 @@ class JoinButtonTableViewCell: UITableViewCell {
 	private let joinButton: UIButton = {
 		let button = UIButton()
 		button.translatesAutoresizingMaskIntoConstraints = false
-		button.setTitleColor(GeneralColors.globalColor, for: .normal)
+		button.setTitleColor(.lightGray, for: .normal)
 		button.setTitle("Join", for: .normal)
 		return button
 	}()
@@ -37,6 +37,7 @@ class JoinButtonTableViewCell: UITableViewCell {
 	
 	private func configureView() {
 		selectionStyle = .none
+		backgroundColor = .darkGray
 		contentView.addSubview(joinButton)
 		joinButton.addTarget(self, action: #selector(joinButtonPressed), for: .touchUpInside)
 	}

@@ -9,26 +9,22 @@
 import UIKit
 
 class TaskNameTableViewCell: UITableViewCell {
-
+	
 	let taskNameTextField: UITextField = {
 		let textField = UITextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
-//		textField.placeholder = "Enter task name"
-		textField.attributedPlaceholder = NSAttributedString(string: "Name",
-		attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
+		textField.attributedPlaceholder = NSAttributedString(string: "Enter name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
 		textField.textColor = .lightGray
 		return textField
 	}()
 	
-		override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-			super.init(style: style, reuseIdentifier: reuseIdentifier)
-			
-			configureView()
-			setConstraints()
-			
-			
-		}
+	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		
+		configureView()
+		setConstraints()
+	}
+	
 	private func configureView() {
 		selectionStyle = .none
 		backgroundColor = .darkGray
@@ -45,7 +41,15 @@ class TaskNameTableViewCell: UITableViewCell {
 		])
 	}
 	
-		required init?(coder: NSCoder) {
-			fatalError("init(coder:) has not been implemented")
+	func requestUpdatedName() -> String? {
+		if taskNameTextField.text == "" || taskNameTextField.text == nil || taskNameTextField.text?.count ?? 0 < 1 {
+			shake()
+			return nil
 		}
+		return taskNameTextField.text
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 }

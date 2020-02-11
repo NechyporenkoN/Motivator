@@ -16,7 +16,11 @@ final class SelectPriorityForTaskTableViewController: UITableViewController {
 	
 	init(controller: CreateNewTaskTableViewController?) {
 		previousController = controller
-		super.init(style: .plain)
+		if #available(iOS 13.0, *) {
+			super.init(style: .insetGrouped)
+		} else {
+			super.init(style: .grouped)
+		}
 		presenter = SelectPriorityForTaskTablePresenter(view: self)
 	}
 	
@@ -38,13 +42,17 @@ final class SelectPriorityForTaskTableViewController: UITableViewController {
 		tableView.register(SelectPriorityTableViewCell.self, forCellReuseIdentifier: String(describing: SelectPriorityTableViewCell.self))
 	}
 
+	override func numberOfSections(in tableView: UITableView) -> Int {
+		return presenter?.priorityTitles.count ?? 0
+	}
+	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		presenter?.priorityTitles.count ?? 0
+		return 1
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SelectPriorityTableViewCell.self), for: indexPath) as! SelectPriorityTableViewCell
-		cell.configure(priority: presenter?.priorityTitles[indexPath.row])
+		cell.configure(priority: presenter?.priorityTitles[indexPath.section])
 		return cell
 	}
 	
@@ -53,7 +61,7 @@ final class SelectPriorityForTaskTableViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		previousController?.priority = presenter?.priorityTitles[indexPath.row]
+		previousController?.priority = presenter?.priorityTitles[indexPath.section]
 		navigationController?.popViewController(animated: true)
 	}
 }

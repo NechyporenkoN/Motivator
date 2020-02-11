@@ -137,7 +137,7 @@ extension UIColor {
 extension UIView {
 	
 	func navigationRoundCorners(corners: UIRectCorner, size: CGFloat){
-
+		
 		let rect = CGRect(x: bounds.origin.x, y: bounds.origin.y - UIApplication.shared.statusBarFrame.height, width: bounds.width, height: bounds.height + UIApplication.shared.statusBarFrame.height)
 		let path = UIBezierPath(roundedRect: rect,
 														byRoundingCorners:corners,
@@ -161,3 +161,36 @@ extension UIView {
 		self.layer.mask = maskLayer
 	}
 }
+
+extension Date {
+	func toMilliseconds() -> String {
+		return String(Int(self.timeIntervalSince1970 * 100000))
+	}
+}
+
+func textToImage(draw text: String?, in image: UIImage, at point: CGPoint) -> UIImage {
+		let textColor = UIColor.white
+	let textFont = UIFont.systemFont(ofSize: 12, weight: .medium)
+	
+	let scale = UIScreen.main.scale
+	UIGraphicsBeginImageContextWithOptions(image.size, false, scale)
+	
+	let style = NSMutableParagraphStyle()
+	style.alignment = NSTextAlignment.center
+	
+	let textFontAttributes = [
+		NSAttributedString.Key.font: textFont,
+		NSAttributedString.Key.foregroundColor: textColor,
+		NSAttributedString.Key.paragraphStyle: style
+		] as [NSAttributedString.Key: Any]
+	
+	image.draw(in: CGRect(origin: CGPoint.zero, size: image.size))
+	let rect = CGRect(origin: point, size: image.size)
+	text?.draw(in: rect, withAttributes: textFontAttributes)
+	
+	let newImage = UIGraphicsGetImageFromCurrentImageContext()
+	UIGraphicsEndImageContext()
+	
+	return newImage!
+}
+

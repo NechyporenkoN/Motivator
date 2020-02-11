@@ -8,18 +8,18 @@
 
 import UIKit
 
+protocol FamilyMemberCollectionViewCellDelegate: class {
+	func deleteButtonDidTap(user: User)
+}
+
 class FamilyMemberCollectionViewCell: UICollectionViewCell {
 	
 	private let deleteButton: UIButton = {
 		let button = UIButton()
 		button.translatesAutoresizingMaskIntoConstraints = false
-		button.layer.borderWidth = 1.5
-		button.layer.borderColor = GeneralColors.globalColor.cgColor//GeneralColors.navigationBlueColor.cgColor
-		button.setTitle("X", for: .normal)
-		button.backgroundColor = GeneralColors.navigationBlueColor//GeneralColors.globalColor
-//		button.titleLabel?.textColor = GeneralColors.globalColor//navigationBlueColor
+		button.setImage(UIImage(named: "Delete"), for: .normal)
+		button.backgroundColor = .darkGray
 		button.layer.cornerRadius = 15
-		button.setTitleColor( GeneralColors.globalColor, for: .normal)
 		return button
 	}()
 	
@@ -36,11 +36,15 @@ class FamilyMemberCollectionViewCell: UICollectionViewCell {
 	let nameLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.textColor = GeneralColors.globalColor
+		label.textColor = .lightGray
 		label.textAlignment = .center
 		
 		return label
 	}()
+	
+	private var user: User?
+	
+	weak var delegate: FamilyMemberCollectionViewCellDelegate?
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -50,12 +54,12 @@ class FamilyMemberCollectionViewCell: UICollectionViewCell {
 	}
 	
 	func configure(user: User?, isEditing: Bool?) {
-		
+		self.user = user
 		nameLabel.text = user?.name
 		if let avatar = user?.avatar {
 			avatarImageView.sd_setImage(with: URL(string: avatar), completed: nil)
 			avatarImageView.layer.borderWidth = 0
-		}else {
+		} else {
 			avatarImageView.image = UIImage(named: "UserAvatarHolder")
 			avatarImageView.layer.borderColor = GeneralColors.globalColor.cgColor
 			avatarImageView.layer.borderWidth = 4
@@ -72,7 +76,7 @@ class FamilyMemberCollectionViewCell: UICollectionViewCell {
 		contentView.addSubview(avatarImageView)
 		contentView.addSubview(nameLabel)
 		contentView.addSubview(deleteButton)
-//		deleteButton.layer.cornerRadius = deleteButton.frame.width/2
+		deleteButton.addTarget(self, action: #selector(deleteButtonPressed), for: .touchUpInside)
 		deleteButton.isHidden = true
 	}
 	
@@ -103,6 +107,11 @@ class FamilyMemberCollectionViewCell: UICollectionViewCell {
 		avatarImageView.image = nil
 		nameLabel.text = nil
 		deleteButton.isHidden = true
+	}
+	
+	@objc func deleteButtonPressed() {
+		guard let user = user else { return }
+		delegate?.deleteButtonDidTap(user: user)
 	}
 	
 	required init?(coder: NSCoder) {

@@ -23,6 +23,7 @@ final class SettingsPresenter {
 	var ref: DatabaseReference!
 	var currentUser: User?
 	var dataSource: [[SectionType]] = [[.userProfile], [.family], [.stars]]
+	
 	init(view: SettingsViewDelegate) {
 		self.view = view
 		
@@ -36,8 +37,9 @@ final class SettingsPresenter {
 			if let userID = Auth.auth().currentUser?.uid {
 				let usersData = usersDict["users"] as? [String : AnyObject] ?? [:]
 				let userById = usersData["\(userID)"] as? [String : AnyObject] ?? [:]
-				let user = User(name: userById["name"] as? String, userID: userById["userID"] as? String, role: userById["role"] as? String ?? "", avatar: userById["avatarURL"] as? String, familyID: userById["familyID"] as? String, rights: userById["rights"] as? String)
+				let user = User(name: userById["name"] as? String, userID: userById["userID"] as? String, role: userById["role"] as? String ?? "", avatar: userById["avatarURL"] as? String, familyID: userById["familyID"] as? String, rights: userById["rights"] as? String, tasks: nil)
 				self?.currentUser = user
+//				print(self?.currentUser)
 			}
 			self?.view?.tableViewReloadData()
 		})

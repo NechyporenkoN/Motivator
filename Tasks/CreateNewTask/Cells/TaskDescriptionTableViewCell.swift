@@ -30,26 +30,12 @@ class TaskDescriptionTableViewCell: UITableViewCell {
 		placeholderLabel.sizeToFit()
 		placeholderLabel.textColor = .gray
 		placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
-		placeholderLabel.text = "Description"
+		placeholderLabel.text = "Enter description"
 		placeholderLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
 		return placeholderLabel
 	}()
 	
 	weak var delegate: TaskDescriptionTableViewCellDelegate?
-	
-	
-	
-	
-	
-//	let taskDescriptionTextField: UITextField = {
-//		let textField = UITextField()
-//		textField.translatesAutoresizingMaskIntoConstraints = false
-//		//		textField.placeholder = "Enter task name"
-//		textField.attributedPlaceholder = NSAttributedString(string: "Description",
-//																												 attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
-//		textField.textColor = .lightGray
-//		return textField
-//	}()
 	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -82,13 +68,11 @@ class TaskDescriptionTableViewCell: UITableViewCell {
 			placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor, constant: 4),
 			placeholderLabel.trailingAnchor.constraint(equalTo: textView.trailingAnchor),
 		])
+	}
+	
+	func requestUpdatedDescription() -> String? {
 		
-//		NSLayoutConstraint.activate([
-//			taskDescriptionTextField.topAnchor.constraint(equalTo: topAnchor),
-//			taskDescriptionTextField.bottomAnchor.constraint(equalTo: bottomAnchor),
-//			taskDescriptionTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-//			taskDescriptionTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
-//		])
+		return textView.text
 	}
 	
 	required init?(coder: NSCoder) {
@@ -100,11 +84,11 @@ class TaskDescriptionTableViewCell: UITableViewCell {
 extension TaskDescriptionTableViewCell: UITextViewDelegate {
 	
 	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-			guard range.location == 0 else {
-					return true
-			}
-			let newString = (textView.text as NSString).replacingCharacters(in: range, with: text) as NSString
-			return newString.rangeOfCharacter(from: CharacterSet.whitespacesAndNewlines).location != 0
+		guard range.location == 0 else {
+			return true
+		}
+		let newString = (textView.text as NSString).replacingCharacters(in: range, with: text) as NSString
+		return newString.rangeOfCharacter(from: CharacterSet.whitespacesAndNewlines).location != 0
 	}
 	
 	func textViewDidChange(_ textView: UITextView) {

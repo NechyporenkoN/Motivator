@@ -15,6 +15,7 @@ protocol FamilyTablePresenterDelegate: class {
 	var childrenDataSource: [User?] { get }
 	var currentUser: User? { get }
 	var family: Family? { get }
+	func deleteUserFromFamily(user: User?)
 }
 
 protocol FamilyTableViewDelegate: class {

@@ -13,13 +13,11 @@ class FamilyAvatarTableViewCell: UITableViewCell {
 	private let deleteAvatarButton: UIButton = {
 		let button = UIButton()
 		button.translatesAutoresizingMaskIntoConstraints = false
-		button.layer.borderWidth = 1
-		button.layer.borderColor = GeneralColors.navigationBlueColor.cgColor
-		button.setTitle("X", for: .normal)
-		button.backgroundColor = GeneralColors.globalColor
-		button.setTitleColor(GeneralColors.navigationBlueColor, for: .normal)
+		button.backgroundColor = UIColor.init(white: 0, alpha: 0.7)
 		button.layer.cornerRadius = 15
-
+		button.tintColor = .lightGray
+		button.setBackgroundImage(UIImage(named: "EditAction"), for: .normal)
+//		button.setImage(UIImage(named: "EditAction"), for: .normal)
 		return button
 	}()
 	
@@ -67,14 +65,6 @@ class FamilyAvatarTableViewCell: UITableViewCell {
 		return label
 	}()
 	
-	private let helperBackgroundView: UIView = {
-		let view = UIView()
-		view.layer.cornerRadius = 4
-		view.backgroundColor = GeneralColors.navigationBlueColor
-		
-		return view
-	}()
-	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		
@@ -91,9 +81,8 @@ class FamilyAvatarTableViewCell: UITableViewCell {
 		labelStackView.addArrangedSubview(fullNameLabel)
 		labelStackView.addArrangedSubview(phoneNumberLabel)
 		
-		helperBackgroundView.addSubview(avatarImageView)
-		helperBackgroundView.addSubview(labelStackView)
-		contentView.addSubview(helperBackgroundView)
+		addSubview(avatarImageView)
+		addSubview(labelStackView)
 		
 		avatarImageView.addSubview(deleteAvatarButton)
 //		deleteAvatarButton.layer.cornerRadius = deleteAvatarButton.frame.width/2
@@ -101,21 +90,21 @@ class FamilyAvatarTableViewCell: UITableViewCell {
 		selectionStyle = .none
 		self.backgroundColor = .clear
 		contentView.backgroundColor = .clear
-		
+//		backgroundColor = .black//.darkGray
 	}
 	
 	private func setConstraints() {
 		
 		NSLayoutConstraint.activate([
-			avatarImageView.topAnchor.constraint(equalTo: helperBackgroundView.topAnchor, constant: 4),
-			avatarImageView.bottomAnchor.constraint(equalTo: helperBackgroundView.bottomAnchor, constant: -4),
-			avatarImageView.leadingAnchor.constraint(equalTo: helperBackgroundView.leadingAnchor, constant: 4),
-			avatarImageView.trailingAnchor.constraint(equalTo: helperBackgroundView.trailingAnchor, constant: -4)
+			avatarImageView.topAnchor.constraint(equalTo: topAnchor),
+			avatarImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
+			avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+			avatarImageView.trailingAnchor.constraint(equalTo: trailingAnchor)
 		])
 		
 		NSLayoutConstraint.activate([
 			labelStackView.trailingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: -15),
-			labelStackView.bottomAnchor.constraint(greaterThanOrEqualTo: helperBackgroundView.bottomAnchor, constant: -15),
+			labelStackView.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor, constant: -15),
 			labelStackView.leadingAnchor.constraint(greaterThanOrEqualTo: avatarImageView.leadingAnchor, constant: 15)
 		])
 		
@@ -126,7 +115,6 @@ class FamilyAvatarTableViewCell: UITableViewCell {
 			deleteAvatarButton.widthAnchor.constraint(equalToConstant: 30)
 		])
 	}
-	
 	
 	private func attributeStringMaker(_ phoneNumber: String?, _ email: String?, _ lang: String?) -> NSAttributedString {
 		let lang = lang?.capitalized
@@ -145,9 +133,9 @@ class FamilyAvatarTableViewCell: UITableViewCell {
 	
 	func configure(family: Family?, isEditing: Bool?) {
 		fullNameLabel.text = family?.name
-		phoneNumberLabel.attributedText = attributeStringMaker("$$$$", nil, "&&&")
+//		phoneNumberLabel.attributedText = attributeStringMaker("$$$$", nil, "&&&")
 		guard let family = family, let urlString = family.avaterURL, let url = URL(string: urlString) else { return }
-		print(url)
+//		print(url)
 		avatarImageView.sd_setImage(with: url, placeholderImage: nil)
 		
 		if isEditing ?? false {
@@ -160,11 +148,5 @@ class FamilyAvatarTableViewCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		helperBackgroundView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 20, height: self.frame.height)
-//		helperBackgroundView.roundCorners(corners: [.bottomRight], size: 30)
-		//		helperBackgroundView.backgroundColor = GeneralColors.globalColor
-//		avatarImageView.roundCorners(corners: [.bottomRight], size: 30)
-		
 	}
-	
 }

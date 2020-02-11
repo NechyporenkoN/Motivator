@@ -25,8 +25,16 @@ final class Task {
 	var deadline: String?
 	var status: String?
 	var imageURL: String?
+	var performerAvatar: String?
+	var performerName: String?
+	var performerID: String?
+	var ownerID: String?
+	var ownerAvatar: String?
+	var ownerName: String?
+	var priority: String?
+	var createdAt: Int?
 	
-	init(taskID: String?, taskName: String?, taskBody: String?, comment: String? = nil, price: String?, deadline: String?, status: String?, imageURL: String? = nil) {
+	init(taskID: String?, taskName: String?, taskBody: String?, comment: String? = nil, price: String?, deadline: String?, status: String?, imageURL: String? = nil, createdAt: Int?, performerID: String?, priority: String?, ownerID: String?, performerAvatar: String?, performerName: String?, ownerAvatar: String?, ownerName: String?) {
 		self.taskID = taskID
 		self.taskName = taskName
 		self.taskBody = taskBody
@@ -35,5 +43,13 @@ final class Task {
 		self.deadline = deadline
 		self.status = status
 		self.imageURL = imageURL
+		self.createdAt = createdAt
+		self.performerID = performerID
+		self.priority = priority
+		self.ownerID = ownerID
+		self.performerAvatar = performerAvatar
+		self.performerName = performerName
+		self.ownerName = ownerName
+		self.ownerAvatar = ownerAvatar
 	}
 }

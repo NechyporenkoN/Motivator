@@ -16,7 +16,11 @@ final class AddUserDataTableViewController: UITableViewController {
 	var avatarImage: UIImage?
 	
 	init(user: User?) {
-		super.init(style: .grouped)
+		if #available(iOS 13.0, *) {
+			super.init(style: .insetGrouped)
+		} else {
+			super.init(style: .grouped)
+		}
 		presenter = AddUserDataTablePresenter(view: self, user: user)
 		hidesBottomBarWhenPushed = true
 	}
@@ -44,8 +48,8 @@ final class AddUserDataTableViewController: UITableViewController {
 		//		navigationController?.navigationBar.backgroundColor = tableView.backgroundColor
 		//		tableView.separatorColor = GeneralColors.globalColor
 		tableView.separatorStyle = .none
-		tableView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: -10)
-		tableView.backgroundColor = .darkGray
+//		tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+		tableView.backgroundColor = .black
 		tableView.keyboardDismissMode = .interactive
 		tableView.register(AddingUserDataTableViewCell.self, forCellReuseIdentifier: String(describing: AddingUserDataTableViewCell.self))
 		tableView.register(LogOutTableViewCell.self, forCellReuseIdentifier: String(describing: LogOutTableViewCell.self))
@@ -83,24 +87,24 @@ final class AddUserDataTableViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return indexPath.section == 0 ? 120 : 44
+		return indexPath.section == 0 ? 120 : 50
 	}
 	
-	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		return nil
-	}
-	
-	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return 10
-	}
-	
-	override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-		return nil
-	}
-	
-	override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-		return 0
-	}
+//	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//		return nil
+//	}
+//	
+//	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//		return 10
+//	}
+//	
+//	override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//		return nil
+//	}
+//	
+//	override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//		return 0
+//	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		//		if indexPath.section == 1 {

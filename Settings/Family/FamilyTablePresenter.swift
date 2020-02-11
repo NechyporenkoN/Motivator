@@ -31,20 +31,19 @@ final class FamilyTablePresenter {
 		self.view = view
 		self.currentUser = currentUser
 		
-		configureObserve()
-		//		configureDataSource()
-		
+		configureObserve()		
 	}
 	
 	private func configureDataSource() {
 		dataSource = [.avatar, .parents, .childs]
 		
 		guard let members = family?.members else { return }
-
+		
 		parentsDataSource = []
 		childrenDataSource = []
+		let ref = Database.database().reference().child("users")
 		for member in members {
-			ref.child("users").child(member).observeSingleEvent(of: .value, with: { [weak self] (user) in
+			ref.child(member).observeSingleEvent(of: .value, with: { [weak self] (user) in
 				let value = user.value as? NSDictionary
 				let name = value?["name"] as? String
 				let userID = value?["userID"] as? String
@@ -52,15 +51,12 @@ final class FamilyTablePresenter {
 				let avatar = value?["avatarURL"] as? String
 				let familyID = value?["familyID"] as? String
 				let rights = value?["rights"] as? String
-				let user = User(name: name, userID: userID, role: role, avatar: avatar, familyID: familyID, rights: rights)
-//				print(user.name)
+				let user = User(name: name, userID: userID, role: role, avatar: avatar, familyID: familyID, rights: rights, tasks: nil)
 				if rights == "parent" {
-						self?.parentsDataSource.append(user)
-					
+					self?.parentsDataSource.append(user)
 				} else if rights == "child" {
 					self?.childrenDataSource.append(user)
 				}
-//				dump(user)
 				self?.view?.tableViewReloadData()
 			}) { (error) in
 				print(error.localizedDescription)
@@ -69,29 +65,41 @@ final class FamilyTablePresenter {
 	}
 	
 	private func configureObserve() {
-		ref = Database.database().reference()
-		ref.observe(DataEventType.value, with: { [weak self] (families) in
-			let familiesDict = families.value as? [String : AnyObject] ?? [:]
-			if let familyID =  self?.currentUser?.familyID {
-				let familiesData = familiesDict["families"] as? [String : AnyObject] ?? [:]
-				let familyById = familiesData["\(familyID)"] as? [String : AnyObject] ?? [:]
-				let family = Family(name: familyById["name"] as? String,
-														ownerID: familyById["ownerID"] as? String,
-														familyID: familyById["familyID"] as? String ?? "",
-														members: familyById["members"] as? [String],
-														avaterURL: familyById["avatarURL"] as? String,
-														logoURL: familyById["logoURL"] as? String)
-				self?.family = family
-//				dump(family)
-				if family.familyID == self?.currentUser?.userID {
-					self?.view?.setBarButton()
-				}
+		guard let familyID = currentUser?.familyID else  { return }
+		let ref = Database.database().reference().child("families").child(familyID)
+		ref.observe(DataEventType.value, with: { [weak self] (family) in
+			let familyData = family.value as? [String : AnyObject] ?? [:]
+			let family = Family(name: familyData["name"] as? String,
+													ownerID: familyData["ownerID"] as? String,
+													familyID: familyData["familyID"] as? String ?? "",
+													members: familyData["members"] as? [String],
+													avaterURL: familyData["avatarURL"] as? String,
+													logoURL: familyData["logoURL"] as? String)
+			self?.family = family
+			if family.familyID == self?.currentUser?.userID {
+				self?.view?.setBarButton()
 			}
 			self?.configureDataSource()
 		})
 	}
 	
-	
+	func deleteUserFromFamily(user: User?) {
+		guard let familyID = currentUser?.familyID else  { return }
+		let ref = Database.database().reference().child("families").child(familyID)
+		var post = [AnyHashable : Any]()
+		if let userID = user?.userID, let members = family?.members {
+			var newMembers: [String] = []
+			for member in members {
+				if member != userID {
+					newMembers.append(member)
+				}
+			}
+			post = ["members": newMembers as Any,
+				] as [AnyHashable : Any]
+		}
+		ref.updateChildValues(post)
+		view?.tableViewReloadData()
+	}
 }
 
 // MARK: - FamilyTablePresenterDelegate

@@ -22,13 +22,13 @@ class LogOutTableViewCell: UITableViewCell {
 		return button
 	}()
 	
-	var helperBackgroundView: UIView = {
-		let view = UIView()
-		view.layer.cornerRadius = 4
-		view.backgroundColor = GeneralColors.navigationBlueColor
-		
-		return view
-	}()
+//	var helperBackgroundView: UIView = {
+//		let view = UIView()
+//		view.layer.cornerRadius = 4
+//		view.backgroundColor = GeneralColors.navigationBlueColor
+//
+//		return view
+//	}()
 	
 	var delegate: LogOutTableViewCellDelegate?
 	
@@ -46,27 +46,27 @@ class LogOutTableViewCell: UITableViewCell {
 	
 	private func configureView() {
 		selectionStyle = .none
-		contentView.backgroundColor = .clear
-		self.backgroundColor = .clear
+//		contentView.backgroundColor = .clear
+		backgroundColor = .darkGray
 		
-		contentView.addSubview(helperBackgroundView)
-		helperBackgroundView.addSubview(logOutButton)
+//		contentView.addSubview(helperBackgroundView)
+		addSubview(logOutButton)
 		logOutButton.addTarget(self, action: #selector(logOutButtonPressed), for: .touchUpInside)
 	}
 	
 	private func setConstraints() {
 		
 		NSLayoutConstraint.activate([
-			logOutButton.topAnchor.constraint(equalTo: helperBackgroundView.topAnchor),
-			logOutButton.bottomAnchor.constraint(equalTo: helperBackgroundView.bottomAnchor),
-			logOutButton.leadingAnchor.constraint(equalTo: helperBackgroundView.leadingAnchor),
-			logOutButton.trailingAnchor.constraint(equalTo: helperBackgroundView.trailingAnchor)
+			logOutButton.topAnchor.constraint(equalTo: topAnchor),
+			logOutButton.bottomAnchor.constraint(equalTo: bottomAnchor),
+			logOutButton.leadingAnchor.constraint(equalTo: leadingAnchor),
+			logOutButton.trailingAnchor.constraint(equalTo: trailingAnchor)
 		])
 	}
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		helperBackgroundView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 20, height: self.frame.height)
+//		helperBackgroundView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 20, height: self.frame.height)
 //		helperBackgroundView.roundCorners(corners: [.bottomRight], size: 30)
 	}
 	

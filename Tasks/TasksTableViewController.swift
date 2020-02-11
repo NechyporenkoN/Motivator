@@ -30,14 +30,22 @@ final class TasksTableViewController: UITableViewController {
 	
 	private func configureView() {
 		tableView.backgroundColor = .black
-		tableView.separatorStyle = .none
-		
-		
+		tableView.separatorStyle = .singleLine
+		tableView.separatorColor = .black
+//		tableView.setEditing(true, animated: true)
 		
 		tableView.register(TaskTableViewCell.self, forCellReuseIdentifier: String(describing: TaskTableViewCell.self))
 		
-		let addTaskBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTaskButtonPressed))
-		navigationItem.rightBarButtonItem = addTaskBarButton
+//		configureAddTaskButton()
+	}
+	
+	func configureAddTaskButton() {
+		if presenter?.currentUser?.rights == Rights.parent.rawValue {
+			let addTaskBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTaskButtonPressed))
+			navigationItem.rightBarButtonItem = addTaskBarButton
+		} else {
+			navigationItem.rightBarButtonItem =  nil
+		}
 	}
 	
 	private func configureSubviews() {
@@ -55,7 +63,7 @@ final class TasksTableViewController: UITableViewController {
 	
 	
 	@objc func addTaskButtonPressed() {
-		let destination = CreateNewTaskTableViewController()
+		let destination = CreateNewTaskTableViewController(currentUser: presenter?.currentUser)
 		navigationController?.show(destination, sender: self)
 	}
 	
@@ -65,7 +73,7 @@ final class TasksTableViewController: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TaskTableViewCell.self), for: indexPath) as! TaskTableViewCell
-		cell.configure(task: presenter?.dataSource[indexPath.row], isSelected: selectedIndexs[indexPath] ?? false)
+		cell.configure(task: presenter?.dataSource[indexPath.row], isSelected: selectedIndexs[indexPath] ?? false, rights: presenter?.currentUser?.rights ?? "child")
 		return cell
 	}
 	
@@ -111,6 +119,108 @@ final class TasksTableViewController: UITableViewController {
 		}
 	}
 	
+	override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+		guard let presenter = presenter else { return nil }
+		let delete = UIContextualAction(style: .normal, title: "Delete") { (action, view, handler) in
+			print("DELETE")
+		}
+		
+		let done = UIContextualAction(style: .normal, title: "Done") { (action, view, handler) in
+			print("DONE")
+		}
+		
+		let edit = UIContextualAction(style: .normal, title: "Edit") { (action, view, handler) in
+			print("EDIT")
+		}
+		
+		let approve = UIContextualAction(style: .normal, title: "Approve") { (action, view, handler) in
+			print("approve")
+		}
+		
+		let activate = UIContextualAction(style: .normal, title: "Activate") { (action, view, handler) in
+			print("activate")
+		}
+		
+		delete.backgroundColor = actionsColor(status: presenter.dataSource[indexPath.row].status)
+		done.backgroundColor = actionsColor(status: presenter.dataSource[indexPath.row].status)
+		edit.backgroundColor = actionsColor(status: presenter.dataSource[indexPath.row].status)
+		approve.backgroundColor = actionsColor(status: presenter.dataSource[indexPath.row].status)
+		activate.backgroundColor = actionsColor(status: presenter.dataSource[indexPath.row].status)
+		
+		if let deleteImage = textToImage(draw: "Delete", in: UIImage(named: "DeleteAction")!, at: CGPoint(x: 0, y: 57)).cgImage {
+			delete.image = ImageWithoutRender(cgImage: deleteImage, scale: UIScreen.main.nativeScale, orientation: .up)
+		}
+		
+		if let doneImage = textToImage(draw: "Done", in: UIImage(named: "DoneAction")!, at: CGPoint(x: 0, y: 57)).cgImage {
+			done.image = ImageWithoutRender(cgImage: doneImage, scale: UIScreen.main.nativeScale, orientation: .up)
+		}
+		
+		if let editImage = textToImage(draw: "Edit", in: UIImage(named: "EditAction")!, at: CGPoint(x: 0, y: 57)).cgImage {
+			edit.image = ImageWithoutRender(cgImage: editImage, scale: UIScreen.main.nativeScale, orientation: .up)
+		}
+		
+		if let approveImage = textToImage(draw: "Approve", in: UIImage(named: "DoneAction")!, at: CGPoint(x: 0, y: 57)).cgImage {
+			approve.image = ImageWithoutRender(cgImage: approveImage, scale: UIScreen.main.nativeScale, orientation: .up)
+		}
+		
+		if let activateImage = textToImage(draw: "Activate", in: UIImage(named: "ActivateAction")!, at: CGPoint(x: 0, y: 57)).cgImage {
+			activate.image = ImageWithoutRender(cgImage: activateImage, scale: UIScreen.main.nativeScale, orientation: .up)
+		}
+		
+		var configuration: UISwipeActionsConfiguration!
+		let taskStatuses = presenter.dataSource[indexPath.row].status
+		switch taskStatuses {
+		case StatusTask.active.rawValue:
+			if presenter.currentUser?.rights == Rights.parent.rawValue {
+				configuration = UISwipeActionsConfiguration(actions: [delete, edit])
+			} else {
+				configuration = UISwipeActionsConfiguration(actions: [done])
+			}
+			case StatusTask.awaiting.rawValue:
+			if presenter.currentUser?.rights == Rights.parent.rawValue {
+				configuration = UISwipeActionsConfiguration(actions: [approve, activate])
+			} else {
+				configuration = UISwipeActionsConfiguration(actions: [activate])
+			}
+			case StatusTask.ready.rawValue:
+			if presenter.currentUser?.rights == Rights.parent.rawValue {
+				configuration = UISwipeActionsConfiguration(actions: [])
+			} else {
+				configuration = UISwipeActionsConfiguration(actions: [])
+			}
+			case StatusTask.unfulfilled.rawValue:
+			if presenter.currentUser?.rights == Rights.parent.rawValue {
+				configuration = UISwipeActionsConfiguration(actions: [])
+			} else {
+				configuration = UISwipeActionsConfiguration(actions: [])
+			}
+		default:
+			break
+		}
+		
+		configuration.performsFirstActionWithFullSwipe = false
+
+		return configuration
+	}
+	
+	func actionsColor(status: String?) -> UIColor? {
+		guard let status = status else { return nil}
+		var color: UIColor?
+		
+		if status == StatusTask.active.rawValue {
+			color = GeneralColors.greenCellColor
+		}
+		else if status == StatusTask.awaiting.rawValue {
+			color = GeneralColors.orangeCellColor
+		}
+		else if status == StatusTask.ready.rawValue {
+			color = GeneralColors.purpleCellColor
+		}
+		else if status == StatusTask.unfulfilled.rawValue {
+			color = GeneralColors.redCellColor
+		}
+		return color
+	}
 	
 	//		override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 	//			let frame = CGRect(x: 0, y: 0, width: (navigationController?.navigationBar.frame.width)!, height: (navigationController?.navigationBar.frame.height)! + 20)
@@ -123,4 +233,9 @@ final class TasksTableViewController: UITableViewController {
 // MARK: - TasksViewDelegate
 extension TasksTableViewController: TasksTableViewDelegate {
 	
+	func tableViewReloadData() {
+		DispatchQueue.main.async {
+			self.tableView.reloadData()
+		}
+	}
 }

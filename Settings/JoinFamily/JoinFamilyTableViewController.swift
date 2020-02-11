@@ -14,8 +14,8 @@ final class JoinFamilyTableViewController: UITableViewController {
 	
 	init(currentUser: User?) {
 		if #available(iOS 13.0, *) {
-//			super.init(style: .insetGrouped)
-						super.init(style: .grouped)
+			super.init(style: .insetGrouped)
+//						super.init(style: .grouped)
 		} else {
 			super.init(style: .grouped)
 		}
@@ -36,7 +36,12 @@ final class JoinFamilyTableViewController: UITableViewController {
 	
 	private func configureView() {
 		navigationItem.title = "Join"
+		
+		tableView.keyboardDismissMode = .onDrag
+		tableView.backgroundColor = .black
+		tableView.separatorColor = .black
 		tableView.separatorStyle = .none
+//		tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
 		tableView.register(JoinFamilyIDTableViewCell.self, forCellReuseIdentifier: String(describing: JoinFamilyIDTableViewCell.self))
 		tableView.register(JoinButtonTableViewCell.self, forCellReuseIdentifier: String(describing: JoinButtonTableViewCell.self))
 	}
@@ -67,24 +72,24 @@ final class JoinFamilyTableViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return indexPath.section == 0 ? 80 : 40
+		return indexPath.section == 0 ? 80 : 50
 	}
 	
-	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		return nil
-	}
-	
-	override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-		return nil
-	}
-	
-	override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-		return 0
-	}
-	
-	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return section == 0 ? 80 : 30
-	}
+//	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//		return nil
+//	}
+//
+//	override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//		return nil
+//	}
+//
+//	override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//		return 0
+//	}
+//
+//	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//		return section == 0 ? 80 : 30
+//	}
 }
 
 // MARK: - JoinFamilyTableViewDelegate

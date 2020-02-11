@@ -14,7 +14,11 @@ final class FamilyTableViewController: UITableViewController {
 	private var presenter: FamilyTablePresenterDelegate?
 	
 	init(currentUser: User?) {
-		super.init(style: .grouped)
+		if #available(iOS 13.0, *) {
+			super.init(style: .insetGrouped)
+		} else {
+			super.init(style: .grouped)
+		}
 		presenter = FamilyTablePresenter(view: self, currentUser: currentUser)
 		hidesBottomBarWhenPushed = true
 	}
@@ -35,40 +39,39 @@ final class FamilyTableViewController: UITableViewController {
 		
 		
 		tableView.separatorStyle = .none
-		tableView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: -10)
-		tableView.backgroundColor = .darkGray
+		tableView.contentInset = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
+		tableView.backgroundColor = .black
 		tableView.register(FamilyMembersTableViewCell.self, forCellReuseIdentifier: String(describing: FamilyMembersTableViewCell.self))
 		tableView.register(FamilyAvatarTableViewCell.self, forCellReuseIdentifier: String(describing: FamilyAvatarTableViewCell.self))
-		
 	}
 	
 	
 	
-	private func showActionSheet() {
-		
-		let alert = UIAlertController(title: "Who do you want to invite?", message: nil, preferredStyle: .actionSheet)
-		
-		let message = "Hey, invite you to join our family"
-		var textToShare = [ message ]
-		if let familyID = presenter?.family?.familyID {
-			textToShare.append(familyID)
-		}
-		let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
-		activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
-		activityViewController.excludedActivityTypes = [ UIActivity.ActivityType.airDrop, UIActivity.ActivityType.postToFacebook ]
-		
-		let parentAction = UIAlertAction(title: "Parent", style: .default) { [weak self] (action) in
-			self?.present(activityViewController, animated: true, completion: nil)
-		}
-		let childAction = UIAlertAction(title: "Child", style: .default) { [weak self] (action) in
-			self?.present(activityViewController, animated: true, completion: nil)
-		}
-		
-		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-		alert.addAction(parentAction)
-		alert.addAction(childAction)
-		present(alert, animated: true, completion: nil)
-	}
+//	private func showActionSheet() {
+//		
+//		let alert = UIAlertController(title: "Who do you want to invite?", message: nil, preferredStyle: .actionSheet)
+//		
+//		let message = "Hey, invite you to join our family"
+//		var textToShare = [ message ]
+//		if let familyID = presenter?.family?.familyID {
+//			textToShare.append(familyID)
+//		}
+//		let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
+//		activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+//		activityViewController.excludedActivityTypes = [ UIActivity.ActivityType.airDrop, UIActivity.ActivityType.postToFacebook ]
+//		
+//		let parentAction = UIAlertAction(title: "Parent", style: .default) { [weak self] (action) in
+//			self?.present(activityViewController, animated: true, completion: nil)
+//		}
+//		let childAction = UIAlertAction(title: "Child", style: .default) { [weak self] (action) in
+//			self?.present(activityViewController, animated: true, completion: nil)
+//		}
+//		
+//		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+//		alert.addAction(parentAction)
+//		alert.addAction(childAction)
+//		present(alert, animated: true, completion: nil)
+//	}
 	
 	private func configureSubviews() {
 		//view.addSubview
@@ -77,6 +80,7 @@ final class FamilyTableViewController: UITableViewController {
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
+//		tableView.performBatchUpdates(nil, completion: nil)
 		tableView.reloadData()//reloadSections([0, 1, 2], with: .automatic)
 //		guard editing else { return }
 //		showActionSheet()
@@ -99,10 +103,12 @@ final class FamilyTableViewController: UITableViewController {
 			return cell
 		case .parents:
 			let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: FamilyMembersTableViewCell.self), for: indexPath) as! FamilyMembersTableViewCell
+			cell.delegate = self
 			cell.configure(dataSource: presenter?.parentsDataSource as? [User], isEditing: false)
 			return cell
 		case .childs:
 			let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: FamilyMembersTableViewCell.self), for: indexPath) as! FamilyMembersTableViewCell
+			cell.delegate = self
 			cell.configure(dataSource: presenter?.childrenDataSource as? [User], isEditing: tableView.isEditing)
 			return cell
 		}
@@ -137,11 +143,11 @@ final class FamilyTableViewController: UITableViewController {
 		return false
 	}
 	
-	override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-			if let header = view as? UITableViewHeaderFooterView {
-				header.textLabel?.textColor = GeneralColors.navigationBlueColor
-			}
-	}
+//	override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+//			if let header = view as? UITableViewHeaderFooterView {
+//				header.textLabel?.textColor = GeneralColors.navigationBlueColor
+//			}
+//	}
 
 	
 	//	@objc func editButtonPressed() {
@@ -150,10 +156,10 @@ final class FamilyTableViewController: UITableViewController {
 	//
 	//	}
 	
-	@objc func addButtonPressed() {
-		
-		showActionSheet()
-	}
+//	@objc func addButtonPressed() {
+//
+//		showActionSheet()
+//	}
 }
 
 // MARK: - FamilyTableViewDelegate
@@ -167,5 +173,12 @@ extension FamilyTableViewController: FamilyTableViewDelegate {
 	
 	func setBarButton() {
 		navigationItem.rightBarButtonItem = editButtonItem
+	}
+}
+
+extension FamilyTableViewController: FamilyMembersTableViewCellDelegate {
+	
+	func deleteButtonDidTap(user: User) {
+		presenter?.deleteUserFromFamily(user: user)
 	}
 }

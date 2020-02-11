@@ -8,8 +8,13 @@
 
 import UIKit
 
+protocol FamilyMembersTableViewCellDelegate: class {
+	func deleteButtonDidTap(user: User)
+}
+
 class FamilyMembersTableViewCell: UITableViewCell {
 	
+	weak var delegate: FamilyMembersTableViewCellDelegate?
 	private var familyCollectionView: UICollectionView!
 	private var dataSource: [User]? {
 		didSet {
@@ -22,13 +27,13 @@ class FamilyMembersTableViewCell: UITableViewCell {
 		}
 	}
 	
-	private let helperBackgroundView: UIView = {
-		let view = UIView()
-		view.layer.cornerRadius = 4
-		view.backgroundColor = GeneralColors.navigationBlueColor
-		
-		return view
-	}()
+//	private let helperBackgroundView: UIView = {
+//		let view = UIView()
+//		view.layer.cornerRadius = 4
+//		view.backgroundColor = GeneralColors.navigationBlueColor
+//
+//		return view
+//	}()
 	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -50,7 +55,7 @@ class FamilyMembersTableViewCell: UITableViewCell {
 	private func configureView() {
 		
 		selectionStyle = .none
-		backgroundColor = .clear
+		backgroundColor = .darkGray
 		contentView.backgroundColor = .clear
 		
 		let layout = UICollectionViewFlowLayout()
@@ -62,8 +67,8 @@ class FamilyMembersTableViewCell: UITableViewCell {
 		familyCollectionView.delegate = self
 		familyCollectionView.alwaysBounceHorizontal = true
 		
-		contentView.addSubview(helperBackgroundView)
-		helperBackgroundView.addSubview(familyCollectionView)
+//		contentView.addSubview(helperBackgroundView)
+		addSubview(familyCollectionView)
 		
 		familyCollectionView.register(FamilyMemberCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: FamilyMemberCollectionViewCell.self))
 	}
@@ -71,10 +76,10 @@ class FamilyMembersTableViewCell: UITableViewCell {
 	private func setConstraints() {
 		
 		NSLayoutConstraint.activate([
-			familyCollectionView.topAnchor.constraint(equalTo: helperBackgroundView.topAnchor),
-			familyCollectionView.bottomAnchor.constraint(equalTo: helperBackgroundView.bottomAnchor),
-			familyCollectionView.trailingAnchor.constraint(equalTo: helperBackgroundView.trailingAnchor),
-			familyCollectionView.leadingAnchor.constraint(equalTo: helperBackgroundView.leadingAnchor)
+			familyCollectionView.topAnchor.constraint(equalTo: topAnchor),
+			familyCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
+			familyCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+			familyCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor)
 		])
 	}
 	
@@ -85,7 +90,7 @@ class FamilyMembersTableViewCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		helperBackgroundView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 20, height: self.frame.height)
+//		helperBackgroundView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 20, height: self.frame.height)
 //		helperBackgroundView.roundCorners(corners: [.bottomRight], size: 30)
 		
 	}
@@ -100,6 +105,7 @@ extension FamilyMembersTableViewCell: UICollectionViewDataSource {
 	
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: FamilyMemberCollectionViewCell.self), for: indexPath) as! FamilyMemberCollectionViewCell
+		cell.delegate = self
 		cell.configure(user: dataSource?[indexPath.row], isEditing: isEdit)
 		return cell
 	}
@@ -129,5 +135,12 @@ extension FamilyMembersTableViewCell: UICollectionViewDelegateFlowLayout {
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
 		return 0
+	}
+}
+
+extension FamilyMembersTableViewCell: FamilyMemberCollectionViewCellDelegate {
+	
+	func deleteButtonDidTap(user: User) {
+		delegate?.deleteButtonDidTap(user: user)
 	}
 }
